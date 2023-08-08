@@ -1,5 +1,3 @@
-init
-
 # AIP To Sigma
 
 ## Description
