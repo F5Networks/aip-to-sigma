@@ -1,0 +1,26 @@
+title: CloudTrail VPC Information Discovery
+id: 05b0b597-436b-11ea-a446-b517469c0bc7
+status: stable
+description: Detects information discovery of VPC service components. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/01
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName|startswith: 'DescribeVPC'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Users logging into the AWS Console and navigating to the VPC section will sometimes spawn Describe events
+    - Service user automation discovering components
+level: low

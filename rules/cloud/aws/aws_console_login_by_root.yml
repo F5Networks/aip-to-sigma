@@ -1,0 +1,27 @@
+title: CloudTrail Console Login by Root
+id: fe862587-436a-11ea-aef6-1d9eacfe25b0
+status: stable
+description: Detects console logins by the root user. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/accounts/latest/reference/root-user-tasks.html
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/09
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventName: 'ConsoleLogin'
+        user: 'root'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Root login to perform a task that requires the root user
+level: high

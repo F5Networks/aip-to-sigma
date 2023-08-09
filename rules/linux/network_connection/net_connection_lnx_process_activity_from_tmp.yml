@@ -1,0 +1,21 @@
+title: Exploit Network Connection from /tmp
+id: 4a310e42-f9fb-47b8-87fb-99fd7299399d
+status: experimental
+description: Detects a network connection where the executable lives in /tmp which may indicate malicious activity. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/15
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection:
+        Image|startswith: '/tmp/'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate process execution out of /tmp/
+level: medium

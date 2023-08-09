@@ -1,0 +1,30 @@
+title: CloudTrail SQS Changes
+id: 044a47df-436b-11ea-b6b3-ef5fd28bca6c
+status: stable
+description: Detects changes to Queues and Permissions in AWS SQS. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AWSSimpleQueueService/latest/APIReference/API_Operations.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/05/31
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'sqs.amazonaws.com'
+        eventName:
+            - 'CreateQueue'
+            - 'DeleteQueue'
+            - 'AddPermission'
+            - 'RemovePermission'
+            - 'PurgeQueue'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+level: low

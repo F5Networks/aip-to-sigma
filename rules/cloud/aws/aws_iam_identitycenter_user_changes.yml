@@ -1,0 +1,31 @@
+title: CloudTrail IAM Identity Center User Changes
+id: b857192c-e895-41fa-a2a4-84c1fc889135
+status: test
+description: Detects IAM Identity Center (formerly AWS SSO) user changes. Requires User ID correlation with the linked SSO service in the AWS Console. Licensed under DRL v1.1, original rule copyright F5, Inc. 
+references:
+    - https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_Operations.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/05/05
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource:
+            - 'sso-directory.amazonaws.com'
+            - 'identitystore.amazonaws.com'
+        eventName:
+            - 'CreateUser'
+            - 'DeleteUser'
+            - 'UpdateUser'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate admin activity
+level: low 

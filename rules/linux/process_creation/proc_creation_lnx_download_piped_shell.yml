@@ -1,0 +1,48 @@
+title: Linux Potential Data Download Piped To Shell 
+id: 972a14b9-a9c8-4694-99b0-54ee1526a9f6
+status: test
+description: Detects when a spawned shell calls curl or wget and then pipes the output to a shell such as bash or dash. While this can be used legitimately it is also used by malware to execute scripts without writing them to disk. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc. 
+date: 2023/05/05
+modified: 2023/05/30 
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_shell: 
+        Image|endswith:
+            - '/bash'
+            - '/dash'
+            - '/sh'
+            - '/ksh'
+            - '/tcsh'
+            - '/csh'
+            - '/ash'
+            - '/zsh'
+            - '/mksh'
+            - '/mknod'
+    selection_pipe:     
+        CommandLine|endswith:
+            - '| bash'
+            - '| dash'
+            - '| sh'
+            - '| ksh'
+            - '| tcsh'
+            - '| csh'
+            - '| ash'
+            - '| zsh'
+            - '| mksh'
+            - '| mknod'
+    selection_download:
+        CommandLine|contains:
+            - 'curl'
+            - 'wget'
+    condition: all of selection_*
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Automated piping of scripts to a shell for easier installation. 
+level: high

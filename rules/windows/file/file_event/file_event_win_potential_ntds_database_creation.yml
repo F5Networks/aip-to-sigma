@@ -1,0 +1,26 @@
+title: Sysmon NTDS Database Creation
+id: 0430873b-8c82-403b-af87-b8d11351b9ad
+status: stable
+description: Detects the creation of a file named NTDS.dit which may indicate that the NTDS database has been exported which contains potentially sensitive information. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.ultimatewindowssecurity.com/blog/default.aspx?d=10/2017
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/07/20
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|endswith:
+            - '\ntds.dit'
+            - '\NTDS.dit'
+            - '\NTDS.DIT'
+    condition: selection
+fields:
+    - User
+    - TargetFilename
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate export of NTDS database by authorized users. 
+level: high

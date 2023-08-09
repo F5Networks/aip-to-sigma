@@ -1,0 +1,28 @@
+title: Docker Default Secure Computing Mode Disabled
+id: 158fe4b7-94f5-11e8-b16c-bdf55c61ad63
+status: stable
+description: Detects when a Docker container is run with Secure Computing Mode disabled. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:50147be1f26fcf1120989f6c006f3cc0
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/20
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_image:
+        Image|endswith: '/docker'
+    selection_run:
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    selection_security:
+        CommandLine|contains: '--security-opt=seccomp:unconfined'
+    condition: selection_image and selection_run and selection_security
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Authorized user using a custom secomp profile
+level: high

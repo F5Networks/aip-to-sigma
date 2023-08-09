@@ -1,0 +1,24 @@
+title: Linux Connection To Discord CDN
+id: 3d9835ab-486b-436e-9a8c-077d8fb4559b
+status: stable
+description: Detects connections to the Discord CDN and Media Storage addresses. These sites have been observed in the past hosting malicious payloads. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references: 
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/14
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection:
+        DestinationHostname: 
+            - 'cdn.discordapp.com'
+            - 'media.discordapp.net'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationHostname
+falsepositives:
+    - Legitimate connections to Discord 
+level: high

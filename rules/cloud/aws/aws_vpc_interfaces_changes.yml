@@ -1,0 +1,37 @@
+title: CloudTrail VPC Interface Changes
+id: 02b1ce5c-436b-11ea-a446-adcf141c646d
+status: stable
+description: Detects VPC interface changes. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/05/31
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName:
+            - 'CreateNetworkInterface'
+            - 'CreateNetworkInterfacePermission'
+            - 'DeleteNetworkInterface'
+            - 'DetachNetworkInterface'
+            - 'AttachNetworkInterface'
+            - 'ModifyNetworkInterfaceAttribute'
+            - 'ResetNetworkInterfaceAttribute'
+    filter:
+        user: 'ElasticLoadBalancing'
+        ip: 'elasticloadbalancing.amazonaws.com'
+        userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForElasticLoadBalancing/ElasticLoadBalancing'
+    condition: selection and not filter
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives: 
+    - Legitimate changes to VPC interfaces
+    - Service users other than ELB making automated changes to VPC interfaces
+level: low

@@ -1,0 +1,25 @@
+title: Exploit pkexec activity by a non root user
+id: 6a92e9a6-7eeb-11ec-bc28-e5f1e6e6d5f5
+status: stable
+description: Detects use of pkexec by a non root user which may be an artifact of PwnKit (CVE-2021-4034). Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://access.redhat.com/security/vulnerabilities/RHSB-2022-001
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/15
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        - Image|endswith: '/pkexec'
+        - ParentImage: '/usr/bin/pkexec'
+    filter: 
+        User: 'root'
+    condition: selection and not filter
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate use of pkexec by authorized users
+level: high

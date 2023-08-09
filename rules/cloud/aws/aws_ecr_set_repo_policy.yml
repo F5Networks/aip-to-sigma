@@ -1,0 +1,27 @@
+title: CloudTrail ECR Set Repository Policy
+id: 080bbcb9-436b-11ea-ab95-cd5479f5c226
+status: stable
+description: Detects when a user sets up an ECR repository policy which controls access permissions to a repository. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_SetRepositoryPolicy.html
+    - https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-policies.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/01
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecr.amazonaws.com'
+        eventName: 'SetRepositoryPolicy'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate creation of an ECR policy to allow cross account access
+level: low

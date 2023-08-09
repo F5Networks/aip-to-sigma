@@ -1,0 +1,27 @@
+title: CloudTrail Logging Stopped or Deleted
+id: 000a7c2d-436b-11ea-a446-1d53d311d924
+status: stable
+description: Detects when a user stops CloudTrail logging or deletes a Trail. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/09
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'cloudtrail.amazonaws.com'
+        eventName:
+            - 'StopLogging'
+            - 'DeleteTrail'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - An administrator removing a deprecated Trail
+level: high

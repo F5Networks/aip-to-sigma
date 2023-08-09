@@ -1,0 +1,29 @@
+title: CloudTrail AWS Support Case Changes
+id: 01c216aa-436b-11ea-b6b3-73580a750ef1
+status: stable
+description: Detects when an AWS Support case is created or resolved. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/awssupport/latest/APIReference/API_CreateCase.html
+    - https://docs.aws.amazon.com/awssupport/latest/APIReference/API_ResolveCase.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/01
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'support.amazonaws.com'
+        eventName:
+            - 'CreateCase'
+            - 'ResolveCase'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Admin user creating and resolving AWS Support cases
+level: informational

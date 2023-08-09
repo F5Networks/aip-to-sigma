@@ -1,0 +1,26 @@
+title: CloudTrail Lambda Permission Changes
+id: 00b31755-436b-11ea-aef6-131d03d0701c
+status: stable
+description: Detects when an AWS service, AWS account, or AWS organization is granted permission to use a Lambda function. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/lambda/latest/dg/API_AddPermission.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/01
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'lambda.amazonaws.com'
+        eventName: 'AddPermission'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate permissions granting to other AWS resources
+level: low

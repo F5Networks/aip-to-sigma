@@ -1,0 +1,23 @@
+title: Network Connection To Telegram API Domain
+id: 21afea3d-e570-4f3c-95de-98c1287c2422
+status: test
+description: This rule alerts on connections to the Telegram API domain. Threat actors have been observed using the Telegram API to exfiltrate data. This rule requires that Sysmon is enabled on the server. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/05/05
+modified: 2023/05/30
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationHostname: 'api.telegram.org'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationHostname
+falsepositives: 
+    - Legitimate connections to the Telegram API such as user notifications.
+level: high

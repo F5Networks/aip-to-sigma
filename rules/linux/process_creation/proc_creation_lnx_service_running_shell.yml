@@ -1,0 +1,38 @@
+title: Exploit Service Running Shell
+id: ce4c7bb1-b40e-11e7-93a7-8d2ed9d39f5c
+status: stable
+description: Detects service accounts spawning a shell which may be an artifact of exploitation such as command injection. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/15
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        User: # Modify this list to suit the needs of your own environment
+            - 'www-data'
+            - 'apache'
+            - 'apache2'
+            - 'lighttpd'
+            - 'nginx'
+            - 'tomcat'
+        Image|endswith:
+            - '/bash'
+            - '/dash'
+            - '/sh'
+            - '/ksh'
+            - '/tcsh'
+            - '/csh'
+            - '/ash'
+            - '/zsh'
+            - '/mksh'
+            - '/mknod'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Authorized execution of shells by a service user
+level: high

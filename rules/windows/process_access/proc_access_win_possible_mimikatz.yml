@@ -1,0 +1,25 @@
+title: Process Accessed Possible Mimikatz
+id: 39bdf73c-7e6c-11ea-b563-1f79171981a2
+status: stable
+description: Detects potential use of Mimikatz to access LSASS memory. Newer versions of Mimikatz use 0x1010. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/21
+tags:
+    - attack.t1003.001
+logsource:
+    product: windows
+    category: process_access
+detection:
+    selection:
+        TargetImage: C:\Windows\system32\lsass.exe'
+        GrantedAccess:
+            - '0x1410'
+            - '0x1010'
+    condition: selection
+fields:
+    - SourceUser
+    - SourceImage
+falsepositives:
+    - Some legitimate processes do have 0x1410 as the GrantedAccess
+level: high

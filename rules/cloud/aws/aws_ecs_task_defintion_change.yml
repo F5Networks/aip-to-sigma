@@ -1,0 +1,30 @@
+title: CloudTrail ECS Task Definition Changes
+id: 03d036bb-436b-11ea-880a-0d7437747696
+status: test
+description: Detects when an ECS Task Definition is registered or deregistered. Licensed under DRL v1.1, original rule copyright F5, Inc. 
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_RegisterTaskDefinition.html
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_DeregisterTaskDefinition.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/05/31
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName: 
+            - 'RegisterTaskDefinition'
+            - 'DeregisterTaskDefinition'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Automation of ECS Tasks Registration/Deregistration
+    - Legitimate use of ECS Tasks
+level: low

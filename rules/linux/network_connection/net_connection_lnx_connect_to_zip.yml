@@ -1,0 +1,22 @@
+title: Linux Connection To Zip Domain
+id: ac77867b-6a28-4f32-9722-0a878d700913
+status: test
+description: Detects connections to .zip domains. Since registration has opened there have been multiple phishing websites hosted on these domains. This rule requires that eBPF be enabled on the agent. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/05/31
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection:
+        DestinationHostname|endswith: '.zip'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationHostname
+falsepositives: 
+    - Unlikely
+level: high

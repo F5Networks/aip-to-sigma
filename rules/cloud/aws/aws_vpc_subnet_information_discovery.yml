@@ -1,0 +1,30 @@
+title: CloudTrail VPC Subnet Information Discovery
+id: 040d3f18-436b-11ea-b0d8-9901394bb2c4
+status: stable
+description: Detects information discovery of VPC subnet components. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/09
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName: 'DescribeSubnets'
+    filter:
+        userAgent: 'config.amazonaws.com'
+        userIdentity.arn|endswith:
+            - 'assumed-role/tf-tower-config-role/AWSConfig-Describe'
+            - 'assumed-role/AWSServiceRoleForConfig/AWSConfig-Describe'
+    condition: selection and not filter
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate use of DescribeSubnets such as through automation
+level: low

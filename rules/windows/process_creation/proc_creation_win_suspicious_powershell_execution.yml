@@ -1,0 +1,27 @@
+title: Sysmon Suspicious Powershell Execution
+id: b931b337-f7b1-4741-b16f-60aa98813234
+status: stable
+description: Detects use of Powershell command line flags that may indicate malicious activity. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/21
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection: 
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains:
+            - 'Start-Process'
+            - '-IEX'
+            - '-Invoke-Expression'
+            - 'New-Object Net.WebClient'
+            - 'New-Object System.Net.Webclient'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate use of Powershell by authorized users
+level: high

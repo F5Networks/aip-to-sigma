@@ -1,0 +1,24 @@
+title: Host Download from Pastebin
+id: bcb37e0b-98f2-11ec-8732-5dc2df22dc33
+status: stable
+description: Detects users attempting to download files from Pastebin which can be used to host malicious files. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/13
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith:
+            - '/wget'
+            - '/curl'
+        CommandLine|contains: 'pastebin'
+    condition: selection
+fields:
+    - User
+    - CommandLine
+    - Image
+falsepositives:
+    - Authorized user download files from Pastebin
+level: high

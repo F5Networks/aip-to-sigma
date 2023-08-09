@@ -1,0 +1,118 @@
+title: Sysmon Network Connection to Cryptocurrency Mining Pool
+id: 1f495aca-7e6c-11ea-b563-ebbd62c01e48
+status: stable
+description: Detects connections to some known cryptocurrency mining pools. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/22
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationHostname:
+            - '1q2w3.fun'
+            - '2giga.link'
+            - 'xmrpool.eu'
+            - 'a-o.ninja'
+            - 'ad-miner.com'
+            - 'anime.reactor.cc'
+            - 'baiduccdn1.com'
+            - 'bewhoyouare.gq'
+            - 'candid.zone'
+            - 'cdn.cloudcoins.co'
+            - 'chainblock.science'
+            - 'coin-have.com'
+            - 'coin-hive.com'
+            - 'coinblind.com'
+            - 'coinerra.com'
+            - 'coinhive.com'
+            - 'coinlab.biz'
+            - 'coinnebula.com'
+            - 'coinpirate.cf'
+            - 'cookiescript.info'
+            - 'cookiescriptcdn.pro'
+            - 'cpu2cash.link'
+            - 'crypto-loot.com'
+            - 'cryptoloot.pro'
+            - 'digger.cryptobara.com'
+            - 'dwarfpool.com'
+            - 'easyhash.pro'
+            - 'freecontent.bid'
+            - 'freecontent.loan'
+            - 'freecontent.racing'
+            - 'gasolina.ml'
+            - 'googleanalytcs.com'
+            - 'goredirect.party'
+            - 'hive.tubetitties.com'
+            - 'hodling.faith'
+            - 'host.d-ns.ga'
+            - 'joyreactor.cc'
+            - 'jsccnn.com'
+            - 'jscdndel.com'
+            - 'jsecoin.com'
+            - 'kickass.cd'
+            - 'kissdoujin.com'
+            - 'kisshentai.net'
+            - 'kiwifarms.net'
+            - 'lewd.ninja'
+            - 'listat.biz'
+            - 'lmodr.biz'
+            - 'mataharirama.xyz'
+            - 'mine.moneropool.com'
+            - 'mine.nahnoji.cz'
+            - 'minecrunch.co'
+            - 'minemytraffic.com'
+            - 'miner.cryptobara.com'
+            - 'miner.pr0gramm.com'
+            - 'minergate.com'
+            - 'minexmr.com'
+            - 'miningpoolhub.com'
+            - 'mmmoneropool.com'
+            - 'monero.crypto-pool.fr'
+            - 'monerohash.com'
+            - 'xmr.crypto-pool.fr'
+            - 'stratum.f2pool.com'
+            - 'monerominer.rocks'
+            - 'moneropool.com'
+            - 'moriaxmv.com'
+            - 'morningdigit.com'
+            - 'multipooler.com'
+            - 'nanopool.org'
+            - 'papoto.com'
+            - 'party-nngvitbizn.now.sh'
+            - 'playerassets.info'
+            - 'ppoi.org'
+            - 'minero.pw'
+            - 'rnetpool.com.br'
+            - 'rocks.io'
+            - 'sen-to-zdrowie.ml'
+            - 'stackpathdns.com'
+            - 'static.reasedoper.pw'
+            - 'supportxmr.com'
+            - 't00ls.ru'
+            - 'tokyodrift.ga'
+            - 'webmine.cz'
+            - 'webmine.pro'
+            - 'webminepool.com'
+            - 'webminepool.tk'
+            - 'antpool.com'
+            - 'f2pool.com'
+            - 'poolin.com'
+            - 'xmc.superpools.online'
+            - 'xmo.superpools.online'
+            - 'xmr.poolto.be'
+            - 'xmr.prohash.net'
+            - 'xmrpool.eu'
+            - 'xmrpool.net'
+            - 'xmv.superpools.online'
+            - 'you.tubetitties.com'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationHost
+falsepositives:
+    - Some of these domain names may no longer be associated with cryptomining
+level: high

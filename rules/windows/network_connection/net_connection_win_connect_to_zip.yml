@@ -1,0 +1,22 @@
+title: Network Connection To Zip Domain
+id: 1dd2c2cc-fa5a-46a1-a764-3c187eb2d6cb
+status: test
+description: Detects connections to .zip domains. Since registration has opened there have been multiple phishing websites hosted on these domains. This rule requires that Sysmon is enabled on the server. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/05/31
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationHostname|endswith: '.zip'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationHostname
+falsepositives: 
+    - unlikely
+level: high

@@ -1,0 +1,21 @@
+title: Exploit Network Connection from /dev/shm
+id: 33867da5-3d09-40a8-b96e-047817731042
+status: experimental
+description: Detects a network connection where the executable lives in /dev/shm which may indicate malicious activity. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/15
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection:
+        Image|startswith: '/dev/shm/'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate process execution out of /dev/shm
+level: medium

@@ -1,0 +1,26 @@
+title: CloudTrail IAM Compromised Key Activity
+id: a9eddc44-0cbe-11ec-9c2f-796ccef385fe
+status: stable
+description: Detects when an IAM Access Key has been flagged by AWS as potentially compromised. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSCompromisedKeyQuarantineV2.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/12
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventName: 'AttachUserPolicy'
+        requestParameters.policyArn: 'arn:aws:iam::aws:policy/AWSCompromisedKeyQuarantineV2'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Use of canary keys
+level: critical

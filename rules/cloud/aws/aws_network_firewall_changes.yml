@@ -1,0 +1,43 @@
+title: CloudTrail AWS Network Firewall Changes
+id: ea77ba30-ca19-11eb-8039-5175d46fc016
+status: stable
+description: Detects when AWS Network Firewall settings are changed. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/network-firewall/latest/APIReference/API_Operations.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/12
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'network-firewall.amazonaws.com'
+        eventName:
+            - 'AssociateFirewallPolicy'
+            - 'AssociateSubnet'
+            - 'CreateFirewall'
+            - 'CreateFirewallPolicy'
+            - 'CreateRuleGroup'
+            - 'DeleteFirewall'
+            - 'DeleteFirewallPolicy'
+            - 'DeleteResourcePolicy'
+            - 'DisassociateSubnets'
+            - 'PutResourcePolicy'
+            - 'UntagResource'
+            - 'UpdateFirewallDeleteProtection'
+            - 'UpdateFirewallPolicy'
+            - 'UpdateFirewallPolicyChangeProtection'
+            - 'UpdateLoggingConfiguration'
+            - 'UpdateRuleGroup'
+            - 'UpdateSubnetChangeProtection'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate changes made to the AWS Network Firewall by an authorized user
+level: high

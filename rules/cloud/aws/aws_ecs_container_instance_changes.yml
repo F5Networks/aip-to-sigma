@@ -1,0 +1,33 @@
+title: CloudTrail ECS Container Instance Changes
+id: 0530b0f3-436b-11ea-a446-d1a08d417b1d
+status: stable 
+description: Detects when an ECS container is registered/deregistered or has a state change submitted. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_RegisterContainerInstance.html
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_DeregisterContainerInstance.html
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_UpdateContainerInstancesState.html
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_SubmitContainerStateChange.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/09
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName:
+            - 'RegisterContainerInstance'
+            - 'DeregisterContainerInstance'
+            - 'UpdateContainerInstancesState'
+            - 'SubmitContainerStateChange'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate changes to ECS container registrations
+level: low

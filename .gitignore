@@ -1,0 +1,6 @@
+# macOS Finder
+.DS_Store
+
+# VisualStudio
+.vs/
+.vscode/launch.json

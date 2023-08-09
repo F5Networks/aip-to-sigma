@@ -1,0 +1,26 @@
+title: CloudTrail S3 Create Bucket
+id: ff9fd2ab-436a-11ea-b0d8-25887fa54d9a
+status: stable
+description: Detects when a new S3 bucket is created. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonS3/latest/API/API_CreateBucket.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/07
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName: 'CreateBucket'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate creation of new S3 buckets
+level: low

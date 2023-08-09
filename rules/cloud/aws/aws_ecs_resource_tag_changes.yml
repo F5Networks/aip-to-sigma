@@ -1,0 +1,27 @@
+title: CloudTrail ECS Resource Tag Changes
+id: 05f894a4-436b-11ea-ab95-6f70bb513a50
+status: stable
+description: Detects when ECS resources are tagged or untagged. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/07
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName:
+            - 'TagResource'
+            - 'UntagResource'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Tagging and untagging of ECS resources via automation
+level: low
