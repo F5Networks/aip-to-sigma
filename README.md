@@ -25,7 +25,7 @@ As of August 8th, 2023 all compatible Severity 1 rules in the AIP platform have 
 At this time we are not accepting pull requests. 
 
 ## Maintainers
-[<img alt="Ethan Hansen" src="https://avatars.githubusercontent.com/u/140435226" width="80"/>](https://github.com/f5-ehansen)
+[<img alt="Ethan Hansen" src="https://avatars.githubusercontent.com/u/140435226" width="80"/>](https://github.com/f5-ehansen) [<img alt="Levi Smith" src="https://avatars.githubusercontent.com/u/141268759" width="80"/>](https://github.com/lsmith8) [<img alt="Bria Atchley" src="https://avatars.githubusercontent.com/u/140658380" width="80"/>](https://github.com/briaaatchley)
 
 ## Acknowledgments
 The original Sigma project was developed by Florian Roth and Thomas Patzke.
