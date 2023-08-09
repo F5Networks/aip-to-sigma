@@ -18,6 +18,8 @@ If you would like to look up the AIP version of a rule the `id` field matches up
 ## Support
 While each rule has been run through the [Sigma CLI](https://github.com/SigmaHQ/sigma-cli) in order to check for syntax errors please open up an Issue if you discover a syntax error. 
 
+If you are an AIP customer and have any questions about this project please reach out to your PSE or the AIP SOC.
+
 ## Roadmap
 As of August 8th, 2023 all compatible Severity 1 rules in the AIP platform have had Sigma versions created. Work is underway to continue converting the Severity 2 and 3 rules. 
 
