@@ -1,0 +1,32 @@
+title: Potential CVE-2022-30190 Follina Exploitation Detected
+id: cafa63fb-e5ae-11ec-bb04-f1db23f3abd6
+status: stable
+description: Detects potential exploitation of CVE-2022-30190 Follina by looking for the execution of Microsoft Windows Support Diagnostic Tool with a MS office parent executable. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.huntress.com/blog/microsoft-office-remote-code-execution-follina-msdt-bug
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/21
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\msdt.exe'
+        ParentImage|endswith:
+            - '\WINWORD.EXE'
+            - '\EXCEL.EXE'
+            - '\POWERPNT.EXE'
+            - '\OUTLOOK.EXE'
+            - '\MSPUB.EXE'
+            - '\VISIO.EXE'
+        CommandLine|contains:
+            - 'IT_RebrowseForFile'
+            - 'IT_BrowseForFile'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Unlikely
+level: critical

@@ -1,0 +1,30 @@
+title: Host Potential Kerberos Relay Attack
+id: f791ee09-f101-11ec-a72a-fb3fb9b8a42c
+status: Stable
+description: Detects potential artifacts of a Kerberos relay attack. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://googleprojectzero.blogspot.com/2021/10/using-kerberos-for-authentication-relay.html
+    - https://github.com/Dec0ne/KrbRelayUp
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/21
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4624
+        IpAddress: '127.0.0.1'
+        AuthenticationPackageName: 'Kerberos'
+        LogonType: 3
+        TargetUserSid|endswith: '-500'
+    filter:
+        IpPort: 0
+    condition: selection and not filter
+fields:
+    - TargetUserName
+    - IpAddress
+    - IpPort
+falsepositives:
+    - Authorized logon activity on Domain Controllers
+    - Authorized Pentest activity
+level: high

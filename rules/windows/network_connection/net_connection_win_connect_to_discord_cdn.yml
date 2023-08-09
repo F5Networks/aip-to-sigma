@@ -1,0 +1,24 @@
+title: Network Connection To Discord CDN"
+id: b7b0c5d4-f9f0-4d34-b9aa-8cd7a021f68d
+status: stable
+description: Detects connections to the Discord CDN and Media Storage addresses. These sites have been observed in the past hosting malicious payloads. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references: 
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/23
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationHostname: 
+            - 'cdn.discordapp.com'
+            - 'media.discordapp.net'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationHostname
+falsepositives:
+    - Legitimate connections to Discord 
+level: high

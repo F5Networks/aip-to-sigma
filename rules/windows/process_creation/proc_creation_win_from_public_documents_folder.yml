@@ -1,0 +1,21 @@
+title: Windows Process Execution Out Of Public Documents Folder
+id: 4447a4c7-98d3-11ec-a214-6d5a4a5a1a95
+status: stable
+description: Detects when a process executes out of the Public Documents folder Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/22
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|startswith: 'C:\Users\Public\Documents\'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate process execution out of this folder such as Intuit Quickbooks
+level: high

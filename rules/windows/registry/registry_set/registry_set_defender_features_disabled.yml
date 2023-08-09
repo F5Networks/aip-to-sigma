@@ -1,0 +1,31 @@
+title: Registry Event Windows Defender Features Disabled
+id: 3ed697b5-f0f4-11ec-9b46-d31c29a82519
+status: stable
+description: Detects when Real Time Protection, Cloud-delivered Protection, or Automatic Sample Submission are disabled. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/22
+logsource:
+    product: windows
+    category: registry_set
+detection:
+    selection_initial:
+        EventType: 'SetValue'
+        TargetObject|startswith: 'HKLM\SOFTWARE\Microsoft\Windows Defender'
+    selection_spynet:
+        TargetObject|endswith: 'SpyNetReporting'
+        Details: 'DWORD (0x00000000)'
+    selection_samples:
+        TargetObject|endswith: 'SubmitSamplesConsent'
+        Details: 'DWORD (0x00000000)'
+    selection_monitoring:
+        TargetObject|endswith: 'DisableRealtimeMonitoring'
+        Details: 'DWORD (0x00000001)'
+    condition: selection_initial and (selection_spynet or selection_samples or selection_monitoring)
+fields:
+    - User
+    - TargetObject
+    - Details
+falsepositives:
+    - Authorized user disabling Windows Defender features
+level: high

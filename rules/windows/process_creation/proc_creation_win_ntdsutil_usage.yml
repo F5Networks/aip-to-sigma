@@ -1,0 +1,22 @@
+title: Ntdsutil Usage
+id: 1263964c-a518-466d-9567-321e16b99b06
+status: stable
+description: Detects usage of the Ntdsutil utility. While it is a legitimate tool it can be used to export a database that contains all the Active Directory data including hashed passwords. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://lolbas-project.github.io/lolbas/OtherMSBinaries/Ntdsutil/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/07/20
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\ntdsutil.exe'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate use of this tool by authorized users
+level: high

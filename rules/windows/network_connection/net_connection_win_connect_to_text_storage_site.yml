@@ -1,0 +1,32 @@
+title: Network Connection To Text Storage Site
+id: 00cd4a28-5f37-4299-bafc-d38a76c5eac0
+status: stable
+description: Detects connections to some common text storage sites such as Pastebin which have been observed hosting malicious payloads. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/21
+modified: 2023/07/12
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationHostname:
+            - 'pastebin.com'
+            - 'controlc.com'
+            - 'klgrth.io'
+            - 'ghostbin.com'
+            - '0bin.net'
+            - 'hastebin.com'
+            - 'paste.ee'
+            - 'paste.io'
+            - 'paste.c-net.org'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationHostname
+falsepositives:
+    - Unlikely
+level: high

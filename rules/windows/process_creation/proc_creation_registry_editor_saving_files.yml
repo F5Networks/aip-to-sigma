@@ -1,0 +1,22 @@
+title: Registry Editor Saving Files
+id: c82b1360-caaf-4b6a-876b-07dede818b8d
+status: stable
+description: Detects when the Registry Editor is used to save files which may indicate extraction of potentially sensitive information. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/07/20
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\reg.exe'
+        CommandLine|contains: 'SAVE'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate use of Registry editor to save files by authorized users.
+level: high

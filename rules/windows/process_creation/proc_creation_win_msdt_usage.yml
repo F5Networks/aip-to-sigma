@@ -1,0 +1,22 @@
+title: MSDT Usage
+id: bbd4e5a9-eab3-11ec-9b16-69737e609f62
+status: stable
+description: Detects usage of the Microsoft Support Diagnostic Tool which can be exploited to result in code execution and can be used to bypass Application Whitelisting. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://lolbas-project.github.io/lolbas/Binaries/Msdt/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/21
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\msdt.exe'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate use of MSDT for troubleshooting programs by authorized users
+level: medium
