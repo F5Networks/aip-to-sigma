@@ -1,0 +1,28 @@
+title: CloudTrail EC2 KeyPair Changes
+id: 0074af95-436b-11ea-9b36-3be1e931de14
+status: stable
+description: Detects when an EC2 SSH KeyPair is imported, created or deleted. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/09
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName:
+            - 'ImportKeyPair'
+            - 'CreateKeyPair'
+            - 'DeleteKeyPair'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate creation of an EC2 KeyPair such as a user spinning up a new server
+level: low

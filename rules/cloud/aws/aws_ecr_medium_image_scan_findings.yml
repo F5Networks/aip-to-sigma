@@ -1,0 +1,27 @@
+title: CloudTrail ECR Image Scan Findings - Severity MEDIUM
+id: 08f336bd-436b-11ea-ab95-8b2dbe8a5ddb
+status: stable
+description: Detects when an ECR Image Scan result contains Medium severity findings. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/07
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecr.amazonaws.com'
+        eventName: 'DescribeImageScanFindings'
+        responseElements.imageScanFindings.findingSeverityCounts.MEDIUM|gt: 0
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+    - responseElements.imageScanFindings.findingSeverityCounts
+falsepositives:
+    - Packages that are expected to be a Medium severity finding due to either lack of patch or inability to patch.
+level: low

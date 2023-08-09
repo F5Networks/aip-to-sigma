@@ -1,0 +1,27 @@
+title: CloudTrail ECS Execute Command
+id: 2e5e17c0-dcc6-4a0d-9a14-6e239b8852d4
+status: test
+description: Detects when ECS Exec is used by a user to run commands in or get a shell to a container. Licensed under DRL v1.1, original rule copyright F5, Inc. 
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ExecuteCommand.html
+    - https://aws.amazon.com/blogs/containers/new-using-amazon-ecs-exec-access-your-containers-fargate-ec2/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/04/25
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName: 'ExecuteCommand'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate execution into a container such as through automation or for tasks requiring automation
+level: low

@@ -1,0 +1,27 @@
+title: CloudTrail ECR Create Repository
+id: 072442fa-436b-11ea-9da3-3194b2d8d977
+status: stable
+description: Detects when a user creates an ECR repository. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_CreateRepository.html
+    - https://docs.aws.amazon.com/AmazonECR/latest/userguide/Repositories.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/01
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecr.amazonaws.com'
+        eventName: 'CreateRepository'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate creation of an ECR repository
+level: low

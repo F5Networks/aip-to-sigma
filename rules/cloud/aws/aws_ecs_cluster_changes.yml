@@ -1,0 +1,29 @@
+title: CloudTrail ECS Cluster Changes
+id: fce8f081-436a-11ea-880a-1f40ed373120
+status: stable
+description: Detects when an ECS cluster is created or deleted. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_CreateCluster.html
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_DeleteCluster.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/07
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName: 
+            - 'CreateCluster'
+            - 'DeleteCluster'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate creation or deletion of ECS clusters
+level: low

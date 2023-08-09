@@ -1,0 +1,27 @@
+title: CloudTrail ECR Image Scan Findings - Severity CRITICAL
+id: e68df0f4-c842-11ea-bfdb-1354692ebf04
+status: stable
+description: Detects when an ECR Image Scan result contains Critical severity findings. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/07
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecr.amazonaws.com'
+        eventName: 'DescribeImageScanFindings'
+        responseElements.imageScanFindings.findingSeverityCounts.CRITICAL|gt: 0
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+    - responseElements.imageScanFindings.findingSeverityCounts
+falsepositives:
+    - Packages that are expected to be a Critical severity finding due to either lack of patch or inability to patch
+level: critical

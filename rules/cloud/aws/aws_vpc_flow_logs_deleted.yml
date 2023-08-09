@@ -1,0 +1,25 @@
+title: CloudTrail VPC FlowLogs Deleted
+id: 7ee873e7-98d2-11ec-832f-c9d579663acf
+status: stable
+description: Detects deletion of VPC FLow Logs by a user. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+      - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DeleteFlowLogs.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/12
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventName: 'DeleteFlowLogs'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate deletion of VPC Flow Logs by an authorized user
+level: high

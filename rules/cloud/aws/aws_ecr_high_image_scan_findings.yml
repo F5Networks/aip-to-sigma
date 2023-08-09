@@ -1,0 +1,27 @@
+title: CloudTrail ECR Image Scan Findings - Severity HIGH
+id: 5f8b88b9-4386-11ea-91a6-c5fbd2da3de1
+status: stable
+description: Detects when an ECR Image Scan result contains High severity findings. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/07
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecr.amazonaws.com'
+        eventName: 'DescribeImageScanFindings'
+        responseElements.imageScanFindings.findingSeverityCounts.HIGH|gt: 0
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+    - responseElements.imageScanFindings.findingSeverityCounts
+falsepositives:
+    - Packages that are expected to be a High severity finding due to either lack of patch or inability to patch
+level: high

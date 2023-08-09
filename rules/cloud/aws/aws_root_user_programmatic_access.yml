@@ -1,0 +1,26 @@
+title: CloudTrail Root User Programmatic Access
+id: 0d4319fe-f103-11ec-933e-df469e85633e
+status: stable
+description: Detects root user programmatic activity which does not align with AWS best practices. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#lock-away-credentials
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/12
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        user: 'root'
+        accessKey|startswith: 'AKIA'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Unlikely
+level: critical

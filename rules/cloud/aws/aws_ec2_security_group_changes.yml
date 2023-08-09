@@ -1,0 +1,33 @@
+title: CloudTrail EC2 Security Group Changes
+id: fd353bf9-436a-11ea-9da3-c3beb943336f
+status: stable
+description: Detects EC2 security group changes. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/09
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection_source: 
+        eventSource: 'ec2.amazonaws.com'
+    selection_event:
+        - eventName:
+            - 'CreateSecurityGroup'
+            - 'DeleteSecurityGroup'
+            - 'RevokeSecurityGroupEgress'
+            - 'RevokeSecurityGroupIngress'
+        - eventName|startswith:
+            - 'UpdateSecurityGroupRuleDescriptions'
+            - 'AuthorizeSecurityGroup'
+    condition: selection_source and selection_event
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate changes to EC2 security groups by users
+level: medium

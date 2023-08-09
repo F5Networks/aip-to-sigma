@@ -1,0 +1,29 @@
+title: CloudTrail EC2 RunInstances
+id: 04f02503-436b-11ea-9b36-dbbbeeebad5e
+status: stable 
+description: Detects EC2 instances starting up filtering out the Autoscaling user. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RunInstances.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/01
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName: 'RunInstances'
+    filter:
+        user: 'AutoScaling'
+        ip: 'autoscaling.amazonaws.com'
+        userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForAutoScaling/AutoScaling'
+    condition: selection and not filter
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+level: low

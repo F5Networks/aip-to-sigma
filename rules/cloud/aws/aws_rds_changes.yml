@@ -1,0 +1,30 @@
+title: CloudTrail RDS Changes
+id: 0511b6d4-436b-11ea-a2b9-17c6a543bf55
+status: stable
+description: Detects Create/Copy/Delete/Modify changes to DBs in RDS. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Operations.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/07
+modified: 2023/07/18
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'rds.amazonaws.com'
+        eventName|startswith:
+            - 'CreateDB'
+            - 'CopyDB'
+            - 'DeleteDB'
+            - 'ModifyDB'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate changes to RDS resources
+level: low
