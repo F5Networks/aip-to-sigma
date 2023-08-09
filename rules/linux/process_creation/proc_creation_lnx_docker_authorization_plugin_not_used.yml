@@ -1,0 +1,25 @@
+title: Docker Authorization Plugin Not Used
+id: 124e9ba1-94f5-11e8-bded-878687a0554c
+status: stable
+description: Detects when the Docker authorization plugin is not used which could allow any user with permissions to access the daemon the ability to run any Docker client command. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L2_v1.0.0.audit:da027894f2a109151b2ea901c61d258e
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/16
+logsource:
+    product: linux
+    category: process creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+    filter:
+        - CommandLine|contains: '--authorization-plugin='
+        - CommandLine|startswith: 'libnetwork-setkey'
+    condition: selection and not filter
+fields: 
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Authorized use of Docker without the Authorization Plugin
+level: high

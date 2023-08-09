@@ -1,0 +1,27 @@
+title: Exploit Kernel Module Activity
+id: ce4c2d90-b40e-11e7-93a7-9fc55435b392
+status: stable
+description: Detects kernel module activity such as loads or unloads which could be leveraged to install rootkits. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/13
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_image:
+        Image|endswith:
+            - '/insmod'
+            - '/rmmod'
+    selection_commandline:
+        CommandLine: null                    
+    filter:
+        CommandLine|contains: 'uprobes'
+    condition: (selection_image and not selection_commandline) and not filter
+fields:
+    - CommandLine
+    - Image
+    - User
+falsepositives:
+    - Kernel modules being loaded and unloaded due to updates such as Trend Micro, iptables and Acronis
+level: high

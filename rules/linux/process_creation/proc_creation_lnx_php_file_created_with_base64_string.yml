@@ -1,0 +1,22 @@
+title: Exploit PHP File Created with Base 64 String
+id: 8400a4d9-7a11-11ec-a75c-d96c8cf3075c
+status: stable
+description: Detects php files that are being decoded and executed from base64 which can be indicative of a potential PHP exploit. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/13
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        CommandLine|contains: 'eval(base64_decode'
+        CommandLine|endswith: 'php'
+    condition: selection
+fields:
+    - Image
+    - CommandLine
+    - User
+falsepositives:
+    - Legitimate use of base64 with php files created by authorized users
+level: high

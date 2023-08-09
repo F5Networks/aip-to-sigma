@@ -1,0 +1,29 @@
+title: Docker No Memory Usage Limit Set
+id: 16d38849-94f5-11e8-b16c-7d851443f44b
+status: stable
+description: Detects when a container is started without any memory usage limit set which could lead to the container consuming all the host resoruces. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:0b487520e97e87d3137377ad9228f226
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/20
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection: 
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    filter: 
+        CommandLine|contains:
+            - '--memory'
+            - '-m'
+    condition: selection and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Authorized users starting up a container without memory limits
+level: high

@@ -1,0 +1,26 @@
+title: Docker Container's root Filesystem Not Mounted as Read-Only
+id: 10ff6013-94f5-11e8-b16c-c761a4b057ef
+status: stable
+description: Detects when a Docker container is started without the filesystem being read-only. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:6752d9423f1e5b59b5db7e01a30ae764
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/20
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    filter:
+        CommandLine|contains: '--read-only'
+    condition: selection and not filter
+fields:
+    - Image
+    - CommandLine
+    - User
+falsepositives:
+level: high

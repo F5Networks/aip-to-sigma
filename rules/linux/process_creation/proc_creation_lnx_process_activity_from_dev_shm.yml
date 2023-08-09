@@ -1,0 +1,29 @@
+title: Exploit Process Activity from /dev/shm
+id: 49cd28e-579d-11e9-9f64-69c4697a3571
+status: stable
+description: Detects process execution out of the /dev/shm directory which may indicate malicious activity. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/15
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_image:
+        Image|startswith: '/dev/shm/'
+    selection_directory:
+        - CurrentDirectory|startswith: '/dev/shm'
+        - CurrentDirectory: '/dev/shm/'
+    selection_command_line:
+        Image:
+            - '/bin/bash'
+            - '/bin/sh'
+        CommandLine|contains: '/dev/shm'
+    condition: selection_image or selection_directory or selection_command_line
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate process execution out of /dev/shm
+level: medium

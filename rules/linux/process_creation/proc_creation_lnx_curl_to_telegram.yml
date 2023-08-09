@@ -1,0 +1,23 @@
+title: Linux Potential Connection To Telegram API via cURL
+id: dfe92794-275a-4041-84bc-b8d7745e051b
+status: test
+description: This rule alerts on potential connections to the Telegram API via cURL. Threat actors have been observed using the Telegram API to exfiltrate data using cURL. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/05/05
+modified: 2023/05/30
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/curl'
+        CommandLine|contains: 'api.telegram.org'
+    condition: selection
+fields:
+    - user
+    - Image
+    - CommandLine
+falsepositives: 
+    - Legitimate connections to the Telegram API such as user notifications.
+level: high

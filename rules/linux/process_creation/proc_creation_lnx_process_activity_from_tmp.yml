@@ -1,0 +1,53 @@
+title: Exploit Process Activity from /tmp
+id: ce4e5078-b40e-11e7-93a7-9ff25e628d66
+status: stable  
+description: Detects process activity running out of the /tmp directory which may indicate malicious activity. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/15
+updated: 2023/07/20
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_image:
+        - Image|startswith: 
+            - '/tmp/'
+            - '/var/tmp/'
+    selection_directory:
+        - CurrentDirectory|startswith: '/tmp/'
+        - CurrentDirectory|startswith: '/var/tmp/'
+        - CurrentDirectory: '/tmp'
+    selection_command_line:
+        Image:
+            - '/bin/bash'
+            - '/bin/sh'
+            - '/bin/dash'
+        CommandLine|contains: 
+            - '/tmp/'
+            - '/var/tmp/'
+    filter: # This filters out artifacts of kernel updates
+        Image:
+            - '/bin/cpio'
+            - '/usr/bin/find'
+            - '/bin/gzip'
+            - '/usr/bin/xargs'
+            - '/bin/sed'
+            - '/usr/bin/lz4'
+            - '/usr/bin/sort'
+            - '/usr/bin/awk'
+        CommandLine:
+            - 'cpio --quiet -o -H newc'
+            - 'find .'
+            - 'find . -type l -printf %p %Yn'
+            - 'gzip'
+            - 'find . -mindepth 1 -type d'
+        CurrentDirectory|startswith: '/var/tmp/'
+    condition: (selection_image or selection_directory or selection_command_line) and not filter
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Many applications (such as pip) by default utilize the /tmp/ directory during execution
+level: medium

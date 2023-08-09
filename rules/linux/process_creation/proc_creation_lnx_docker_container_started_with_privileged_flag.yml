@@ -1,0 +1,27 @@
+title: Docker Container Started with Privileged Flag
+id: 11528860-94f5-11e8-bded-27bca7c19cf5
+status: stable
+description: Detects when docker is executed with the "--privileged" flag which gives all capabilities to the container, effectively giving it host level access. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:a41a720a0128c91d87ff22eb7857a3bc
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/16
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    selection_priv:
+        CommandLine|contains: '--privileged'    
+    condition: selection and selection_priv
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Authorized use of Docker with the --privileged flag
+level: high

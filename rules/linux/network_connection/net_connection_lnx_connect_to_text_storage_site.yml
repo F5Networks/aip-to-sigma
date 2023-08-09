@@ -1,0 +1,32 @@
+title: Linux Connection To Text Storage Site
+id: c76d386a-a618-4992-b95f-fd2561e0e325
+status: stable
+description: Detects connections to common text storage sites such as Pastebin. These sites have been observed in the past hosting malicious payloads. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/14
+modified: 2023/07/12
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection:
+        DestinationHostname:
+            - 'pastebin.com'
+            - 'controlc.com'
+            - 'klgrth.io'
+            - 'ghostbin.com'
+            - '0bin.net'
+            - 'hastebin.com'
+            - 'paste.ee'
+            - 'paste.io'
+            - 'paste.c-net.org'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationHostname
+falsepositives:
+    - Unlikely
+level: high

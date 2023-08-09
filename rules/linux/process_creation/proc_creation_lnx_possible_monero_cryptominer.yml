@@ -1,0 +1,29 @@
+title: Possible Monero Cryptominer
+id: d6a23866-5f84-11ec-857e-2b979bac763f
+status: stable
+description: Detects artifacts that have been associated with Monero cryptominers in the wild. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references: 
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/14
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection: 
+        - CommandLine:
+            - 'sh -c /sbin/modprobe msr > /dev/null 2>&1'
+            - 'sh -c /sbin/modprobe msr allow_writes=on > /dev/null 2>&1'
+            - '/sbin/modprobe msr'
+            - 'modprobe msr allow_writes=on'
+            - '/sbin/modprobe msr allow_writes=on'
+        - CommandLine|contains:
+            - 'donate-level'
+            - 'rig-id'
+            - 'cpu-max-threads'
+    condition: selection
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives: unlikely
+level: critical
