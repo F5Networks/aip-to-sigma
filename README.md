@@ -1,7 +1,7 @@
 # AIP To Sigma
 
 ## Description
-This project contains rules from the F5 Distributed Cloud App Infrastructure Protection (AIP) product in the [Sigma](https://github.com/SigmaHQ/sigma) format. Sigma is a "Generic Signature Format for SIEM Systems" and could best be summed up as "Sigma is for log files what Snort is for network traffic and YARA is for files.". 
+This project contains rules from F5 Distributed Cloud App Infrastructure Protection (AIP) in the [Sigma](https://github.com/SigmaHQ/sigma) format. Sigma is a "Generic Signature Format for SIEM Systems" and could best be summed up as "Sigma is for log files what Snort is for network traffic and YARA is for files". 
 
 Since AIP reached End-Of-Sale in June 2023 and will reach End-Of-Life in June 2024 the AIP Rules Team decided to create Sigma version of as many of our rules as possible so customers can take advantage of our rules in other products after June 2024. If any changes are made to existing rules in the AIP product or if new rules are created those changes will be pushed to this project shortly after. 
 
@@ -38,4 +38,4 @@ The content of this repository is released under the following licenses:
 * The [Sigma Specification](https://github.com/SigmaHQ/sigma-specification) and the Sigma logo are public domain
 * The rules contained in the [SigmaHQ repository](https://github.com/SigmaHQ) are released under the [Detection Rule License (DRL) 1.1](https://github.com/SigmaHQ/Detection-Rule-License)
 
-Copies of these licenses are included in this repo
+Copies of these licenses are included in this repo.
