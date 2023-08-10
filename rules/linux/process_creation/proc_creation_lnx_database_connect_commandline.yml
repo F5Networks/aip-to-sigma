@@ -1,0 +1,30 @@
+title: Database Connection from Command Line
+id: ce46fd5d-b40e-11e7-93a7-7761270db9b0
+status: stable
+description: Detects when an interactive session connects to a database via the command line interface. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/10
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: 
+          - '/mongo'
+          - '/psql'
+          - '/csql'
+          - '/redis-cli'
+          - '/mysql'
+          - '/clash'
+    filter:
+        TerminalSessionId: -1        
+    condition: selection and not filter
+fields:
+    - User
+    - Image
+    - CommandLine
+    - TerminalSessionId
+falsepositives:
+    - Legitimate access to database via the command line by an authorized user.
+level: medium

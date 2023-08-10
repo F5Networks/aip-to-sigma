@@ -6,9 +6,10 @@ references:
     - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L2_v1.0.0.audit:da027894f2a109151b2ea901c61d258e
 author: Ethan Hansen - Security Engineer, F5 Inc
 date: 2023/06/16
+modified: 2023/08/10
 logsource:
     product: linux
-    category: process creation
+    category: process_creation
 detection:
     selection:
         Image|endswith: '/docker'
