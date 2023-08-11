@@ -18,7 +18,9 @@ detection:
           - '/mysql'
           - '/clash'
     filter:
-        TerminalSessionId: -1        
+        TerminalSessionId:
+          - -1
+          - 4294967295        
     condition: selection and not filter
 fields:
     - User
