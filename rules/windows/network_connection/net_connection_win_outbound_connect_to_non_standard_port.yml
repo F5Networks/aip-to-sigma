@@ -1,0 +1,33 @@
+title: Network Outbound Connection Over Non-Standard Port
+id: 16345f60-7e6c-11ea-a9e3-3d2d26dbc895
+status: stable
+description: Detects when a process makes a connection over a non standard port. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://attack.mitre.org/techniques/T1571/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/15
+tags:
+    - attack.command_and_control
+    - attack.t1571
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        Initiated: 'true'
+    filter:
+        DestinationPort: # Update this list as needed for your environment
+            - 22
+            - 80
+            - 443
+            - 3389
+            - 25
+    condition: selection and not filter
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationPort
+falsepositives:
+    - Connects made by an authorized application over a port not on this list
+level: medium
