@@ -1,0 +1,28 @@
+title: Sysmon File Create in Temp Folder
+id: 087d79c8-7e6c-11ea-b74b-210e33ba2d1e
+status: stable
+description: Detects file creation within temporary folder directories. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://attack.mitre.org/techniques/T1074/001/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/15
+tags:
+    - attack.collection
+    - attack.t1074.001
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|contains:
+            - '\AppData\Local\Temp'
+            - '\Windows\Temp'
+    condition: selection
+fields:
+    - User
+    - TargetFilename
+    - Image
+    - CommandLine
+falsepositives:
+    - Authorized applications and users creating files in temporary directories
+level: medium

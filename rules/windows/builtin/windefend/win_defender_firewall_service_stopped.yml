@@ -1,0 +1,18 @@
+title: Firewall Service Stopped
+id: 13df24b0-7e6c-11ea-8c41-17985ec29b91
+status: stable
+description: Detects when the firewall service is stopped. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references: 
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-5025
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/15
+logsource:
+    product: windows
+    service: windefend
+detection:
+    selection:
+        EventID: 5025
+    condition: selection
+falsepositives:
+    - Actions by an authorized user, however it should still be investigated
+level: medium
