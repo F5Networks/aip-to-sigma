@@ -1,0 +1,36 @@
+title: CloudTrail VPC Changes
+id: ff81009a-436a-11ea-a2b9-f50fbd96516d
+status: stable
+description: Detects VPC changes. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/21
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection_source:
+        eventSource: 'ec2.amazonaws.com'
+    selection_event_starts:
+        eventName|startswith:
+            - 'DeleteVpc'
+            - 'CreateVpc'
+            - 'ModifyVpc'
+            - 'DisableVpc'
+            - 'EnableVpc'
+    selection_event:
+        eventName:
+            - 'DetachClassicLinkVpc'
+            - 'CreateDefaultVpc'
+            - 'AttachClassicLinkVpc'
+            - 'AssociateVpcCidrBlock'
+    condition: selection_source and (selection_event_starts or selection_event)
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - VPC changes by authorized users
+level: low
