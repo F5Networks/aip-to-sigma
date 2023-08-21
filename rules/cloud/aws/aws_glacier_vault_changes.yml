@@ -1,0 +1,32 @@
+title: CloudTrail Glacier Vault Changes
+id: fe42dac5-436a-11ea-9b36-25598d719796
+status: stable
+description: Detects when Glacier Vault changes are made. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/21
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection_source:
+        eventSource|startswith: 'glacier.'
+    selection_starts:
+        eventName|startswith: 'SetVault'
+    selection_event:
+        eventName:
+            - 'CreateVault'
+            - 'DeleteVault'
+            - 'DeleteArchive'
+            - 'CreateArchive'
+    condition: selection_source and (selection_starts or selection_event)
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Changes by authorized users
+    - Changes via automation
+level: low
