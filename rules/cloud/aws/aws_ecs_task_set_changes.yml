@@ -1,0 +1,29 @@
+title: CloudTrail ECS Task Set Changes
+id: fcc11ccf-436a-11ea-ab95-99a03723994a
+status: stable
+description: Detects when an ECS Task Set is created, deleted, or updated. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/21
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName:
+            - 'CreateTaskSet'
+            - 'DeleteTaskSet'
+            - 'UpdateServicePrimaryTaskSet'
+            - 'UpdateTaskSet'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate changes by authorized users
+    - Automated changes by service users
+level: medium
