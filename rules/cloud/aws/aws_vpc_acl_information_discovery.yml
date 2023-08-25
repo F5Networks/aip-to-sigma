@@ -1,0 +1,24 @@
+title: CloudTrail VPC ACL Information Discovery
+id: fdae14da-436a-11ea-b6b3-7d930267263d
+status: stable
+description: Detects discovery of VPC ACLs. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/21
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName: 'DescribeNetworkAcls'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Events spawned from a user logging into the AWS Console and navigating to the VPC section
+level: low

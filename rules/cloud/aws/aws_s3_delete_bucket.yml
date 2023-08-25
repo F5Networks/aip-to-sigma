@@ -1,0 +1,25 @@
+title: CloudTrail S3 Delete Bucket
+id: 02fcb9ef-436b-11ea-9da3-4fbba0702767
+status: stable
+description: Detects when an S3 bucket is deleted. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/21
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName: 'DeleteBucket'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate change by authorized user
+    - Deletion of a bucket that is no longer needed
+level: medium
