@@ -1,0 +1,27 @@
+title: Potential SSHD SOCKS Proxy Traffic Observed
+id: 3039b0e7-57a8-11e9-84ce-17a27beaf675
+status: stable
+description: Detects potential SOCKS Proxy traffic over SSHLicensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/25
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection:
+        Image|endswith: '/sshd'
+    filter:
+        DestinationPort:
+            - 22
+            - 53
+    condition: selection and not filter
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationIp
+    - DestinationPort
+falsepositives:
+    - Legitmate port forwarding over SSH by authorized users
+level: medium

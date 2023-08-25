@@ -1,0 +1,82 @@
+title: Data Movement Inside LAN
+id: 54e246aa-4faa-11e8-92fc-9d2c7bcd0ab5
+status: stable
+description: Detects file transfers within the LAN. File transfer activity should be closely monitored to ensure only authorized users are performing these actions. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/25
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection_exe_nc:
+        Image|endswith: '/nc'
+    selection_exe_curl:
+        Image|endswith: '/curl'
+        CommandLine|contains:
+            - '-F'
+            - '-T'
+    selection_exe_wget:
+        Image|endswith: '/wget'
+        CommandLine|contains:
+            - '--header'
+            - '--post-data'
+            - '--post-file'
+    selection_exe_ftp:
+        Image|endswith: '/ftp'
+        CommandLine|contains:
+            - 'put'
+            - 'mput'
+    selection_exe_sftp:
+        Image|endswith: '/sftp'
+        CommandLine|contains: 'put'
+    selection_exe_scp:
+        Image|endswith: '/scp'
+        CommandLine|contains:
+            - '-r'
+            - '@'
+        CommandLine|contains: ':'
+    selection_exe_rsync:
+        Image|endswith: '/rsync'
+        CommandLine|contains|all:
+            - '@'
+            - ':'
+    selection_exe_shell:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+            - '/dash'
+            - '/zsh'
+            - '/ksh'
+    selection_lan:
+        DestinationIp|cidr:
+            - '10.0.0.0/8'
+            - '192.168.0.0/16'
+            - '172.16.0.0/12'
+            - '100.64.0.0/10' # Carrier grade NAT
+            - '::ffff:192.168.0.0/112' #IPv6 formatted IPv4 address
+            - '::ffff:10.0.0.0/104'
+            - '::ffff:172.16.0.0/108'
+            - '::ffff:100.64.0.0/106'
+            - 'FD00::/8'
+    filter_link_local:
+        DestinationIp|cidr:
+            - '127.0.0.1/32'
+            - '127.0.0.53/32' # DNS in some cloud providers
+            - '169.254.169.253/32' # Cloud provider metadata
+            - '169.254.169.254/32' # Cloud provider metadata
+            - '169.254.169.123/32' # NTP in some cloud providers
+            - 'FE80::/10'
+            - '::ffff:127.0.0.1/128'
+            - '::ffff:169.254.169.253/128'
+            - '::ffff:169.254.169.254/128'
+            - '::ffff:169.254.169.123/128'
+    condition: 1 of selection_exe* and selection_lan and not filter_link_local
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationIp
+falsepositives:
+    - Legitimate data movement around LAN such as moving data between servers
+level: medium

@@ -1,0 +1,22 @@
+title: Use Of base64 Executable
+id: 842298d7-57a9-11e9-a0f5-97de15482e73
+status: stable
+description: Detects usage of the base64 executable which can encode/decode data and has been observed in data exfiltration. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/25
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/base64'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Use of base64 by authorized users
+    - Tooling that may utilize base64 to decode data such as kubectl
+level: medium
