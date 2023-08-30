@@ -1,0 +1,23 @@
+title: Host Cloud Metadata Interface Communication
+id: 9d1f17cb-21d6-11ea-99bd-4f31a2a6e811
+status: stable
+description: Detects connections to the metadata interface IP address. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/30
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection:
+        DestinationIp: '169.254.169.254'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationIp
+falsepositives:
+    - Automation that connects to the metadata IP
+    - Authorized users connecting to the metadata IP to gather information
+level: low
