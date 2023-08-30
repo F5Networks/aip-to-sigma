@@ -1,0 +1,39 @@
+title: Host Data Encryption or Decryption Observed
+id: 1ba8d657-57a9-11e9-a14b-cb6fe65b2e97
+status: stable
+description: Detects utilities that can be used to encrypt and decrypt data which has been used in conjunction with data exfiltration techniques. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/30
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_gpg:
+        Image|endswith:
+            - '/gpg'
+            - '/gpg2'
+            - '/bcrypt'
+            - '/ccrypt'
+    selection_zip:
+        Image|endswith: '/zip'
+        CommandLine|contains:
+            - '-P'
+            - '--password'
+    selection_7z:
+        Image|endswith:
+            - '/7z'
+            - '/7za'
+        CommandLine|contains: '-mhe=on'
+    selection_cloak:
+        Image|endswith:
+            - '/zipcloak'
+            - '/lrzip'
+    condition: selection_gpg or selection_zip or selection_7z or selection_cloak
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Command usage by authorized users
+level: low
