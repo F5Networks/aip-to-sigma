@@ -1,0 +1,27 @@
+title: Switch User to Non-Root User
+id: 4b453716-9ead-11eb-8fa8-2bd81dc74faf
+status: stable
+description: Detects when a user switches to a non root user. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/08/30
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        CommandLine|startswith: 'sudo su'
+    filter:
+        CommandLine:
+            - 'sudo su'
+            - 'sudo su -'
+            - 'sudo su root'
+            - 'sudo su - root'
+    condition: selection and not filter
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Authorized users switching to other users for administration purposes
+level: medium
