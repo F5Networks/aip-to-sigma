@@ -1,0 +1,30 @@
+title: Software Installation via Package Manager
+id: bffea711-57a8-11e9-aa6e-c9fdbc01ba8d
+status: stable
+description: Detects the use of a package manager to install software. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/05
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        CommandLine|contains:
+            - 'apt-get install'
+            - 'apt install'
+            - 'yum install'
+            - 'npm install'
+            - 'pip install'
+            - 'pip3 install'
+            - 'dpkg -i'
+            - 'rpm -i'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Users installing necessary packages
+    - Automation installing packages
+level: low

@@ -1,0 +1,66 @@
+title: SUID Bit Set
+id: 7ceb9e45-f403-40a4-91a3-0ef0c120bb55
+status: test
+description: Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/06
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/chmod'
+        CommandLine|startswith:
+            - 'chmod 4777'
+            - 'chmod 4775'
+            - 'chmod 4774'
+            - 'chmod 4770'
+            - 'chmod 4757'
+            - 'chomd 4755'
+            - 'chmod 4754'
+            - 'chmod 4750'
+            - 'chmod 4747'
+            - 'chmod 4745'
+            - 'chmod 4744'
+            - 'chmod 4740'
+            - 'chmod 4707'
+            - 'chmod 4705'
+            - 'chmod 4704'
+            - 'chmod 4700'
+            - 'chmod 4577'
+            - 'chmod 4575'
+            - 'chmod 4574'
+            - 'chmod 4570'
+            - 'chmod 4557'
+            - 'chmod 4554'
+            - 'chmod 4550'
+            - 'chmod 4547'
+            - 'chmod 4545'
+            - 'chmod 4544'
+            - 'chmod 4540'
+            - 'chmod 4507'
+            - 'chmod 4505'
+            - 'chmod 4504'
+            - 'chmod 4500'
+            - 'chmod 4477'
+            - 'chmod 4475'
+            - 'chmod 4474'
+            - 'chmod 4470'
+            - 'chmod 4457'
+            - 'chmod 4455'
+            - 'chmod 4454'
+            - 'chmod 4450'
+            - 'chmod 4447'
+            - 'chmod 4445'
+            - 'chmod 4444'
+            - 'chmod 4440'
+            - 'chmod u+s'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Authorized users making changes to binaries that need to be universal such as ping
+level: medium
