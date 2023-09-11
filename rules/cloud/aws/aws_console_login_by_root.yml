@@ -7,18 +7,19 @@ references:
     - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html
 author: Ethan Hansen - Security Engineer, F5 Inc
 date: 2023/06/09
-modified: 2023/07/18
+modified: 2023/09/08
 logsource:
     product: aws
     service: cloudtrail
 detection:
     selection:
         eventName: 'ConsoleLogin'
-        user: 'root'
+        userIdentity.type: 'Root'
+        userIdentity.arn|endswith: ':root'
     condition: selection
 fields:
     - eventName
-    - userIdentity.userName
+    - userIdentity.type
     - userIdentity.arn
     - sourceIPAddress
     - recipientAccountId

@@ -6,7 +6,7 @@ references:
     - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RunInstances.html
 author: Ethan Hansen - Security Engineer, F5 Inc
 date: 2023/06/01
-modified: 2023/07/18
+modified: 2023/09/08
 logsource:
     product: aws
     service: cloudtrail
@@ -15,8 +15,7 @@ detection:
         eventSource: 'ec2.amazonaws.com'
         eventName: 'RunInstances'
     filter:
-        user: 'AutoScaling'
-        ip: 'autoscaling.amazonaws.com'
+        sourceIPAddress: 'autoscaling.amazonaws.com'
         userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForAutoScaling/AutoScaling'
     condition: selection and not filter
 fields:
@@ -25,5 +24,7 @@ fields:
     - userIdentity.arn
     - sourceIPAddress
     - recipientAccountId
-falsepositives:
+falsepositives: 
+    - Legitimate creation of EC2 instances
+    - Service users other than AutoScaling making automated changes to EC2 instances
 level: low
