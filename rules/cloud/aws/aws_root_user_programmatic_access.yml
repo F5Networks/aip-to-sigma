@@ -6,21 +6,23 @@ references:
     - https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#lock-away-credentials
 author: Ethan Hansen - Security Engineer, F5 Inc
 date: 2023/06/12
-modified: 2023/07/18
+modified: 2023/09/08
 logsource:
     product: aws
     service: cloudtrail
 detection:
     selection:
-        user: 'root'
+        userIdentity.type: 'Root'
+        userIdentity.arn|endswith: ':root'
         accessKey|startswith: 'AKIA'
     condition: selection
 fields:
     - eventName
-    - userIdentity.userName
+    - userIdentity.type
     - userIdentity.arn
     - sourceIPAddress
     - recipientAccountId
+    - accessKey
 falsepositives:
     - Unlikely
 level: critical

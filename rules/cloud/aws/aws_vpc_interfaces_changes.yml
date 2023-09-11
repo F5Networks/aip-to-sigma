@@ -5,7 +5,7 @@ description: Detects VPC interface changes. Licensed under DRL v1.1, original ru
 references:
 author: Ethan Hansen - Security Engineer, F5 Inc
 date: 2023/05/31
-modified: 2023/07/18
+modified: 2023/09/08
 logsource:
     product: aws
     service: cloudtrail
@@ -21,8 +21,7 @@ detection:
             - 'ModifyNetworkInterfaceAttribute'
             - 'ResetNetworkInterfaceAttribute'
     filter:
-        user: 'ElasticLoadBalancing'
-        ip: 'elasticloadbalancing.amazonaws.com'
+        sourceIPAddress: 'elasticloadbalancing.amazonaws.com'
         userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForElasticLoadBalancing/ElasticLoadBalancing'
     condition: selection and not filter
 fields:
