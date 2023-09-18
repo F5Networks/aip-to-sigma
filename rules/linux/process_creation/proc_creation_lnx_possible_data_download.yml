@@ -1,0 +1,65 @@
+title: Possible Data Download
+id: ce4e0257-b40e-11e7-93a7-31e7942f398a
+status: stable
+description: Detects inbound file transfers by users using programs such as netcat, scp, wget or rsync. File transfer activity should be closely monitored to ensure only authorized users are performing these actions. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references: 
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/18
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith:
+            - '/curl'
+            - '/scp'
+            - '/wget'
+            - '/rsync'
+            - '/ftp'
+            - '/sftp'
+            - '/nc'
+            - '/tftp'
+            - '/ftpget'
+    filter_curl_post:
+        CommandLine|startswith: 'curl -X POST'
+    filter_curl:
+        Image|endswith: '/curl'
+        CommandLine|contains:
+            - '-F'
+            - '-T'
+    filter_wget:
+        Image|endswith: '/wget'
+        CommandLine|contains:
+            - '--header'
+            - '--post-data'
+            - '--post-file'
+    filter_ftp:
+        Image|endswith: 
+            - '/ftp'
+            - '/sftp'
+        CommandLine|contains:
+            - 'put'
+            - 'mput'
+    filter_rsync:
+        Image|endswith: '/rsync'
+        CommandLine|contains|all:
+            - '@'
+            - ':'
+    filter_scp_recurse:
+        Image|endswith: '/scp'
+        CommandLine|contains|all:
+            - '-r'
+            - ':'
+    filter_scp:
+        Image|endswith: '/scp'
+        CommandLine|contains: '@'
+        CommandLine|endswith: ':'
+    condition: selection and not 1 of filter_*
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Activity by authorized users
+    - Backup activity by known programs
+level: medium
