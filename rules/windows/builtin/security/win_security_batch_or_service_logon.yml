@@ -1,0 +1,27 @@
+title: Batch or Service Successful Logon
+id: 2be9ed5f-7e6c-11ea-804f-29023b4ef591
+status: stable
+description: Detects when a batch or service successfully logs into a system without elevated permissions. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/20
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4624
+        LogonType:
+            - 4
+            - 5
+        ElevatedToken: '%%1843'
+    condition: selection
+fields:
+    - TargetUserName
+    - TargetUserSid
+    - TargetDomainName
+    - WorkstationName
+falsepositives:
+    - Authorized services or batch executions
+level: medium
