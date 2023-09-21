@@ -1,0 +1,27 @@
+title: Security Group Management Members Modified in Local Group
+id: 29d8e7a6-7e6c-11ea-bb13-0dba305c63a9
+status: stable
+description: Detects when a user is added or removed from a security-enabled local group. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-security-group-management
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/20
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID:
+            - 4732 # Member added
+            - 4733 # Member removed
+    condition: selection
+fields:
+    - TargetUserName 
+    - TargetDomainName
+    - MemberName
+    - MemberSid
+    - SubjectUserName
+    - SubjectDomainName
+falsepositives:
+    - Authorized users adding and removing users from security enabled groups
+level: medium
