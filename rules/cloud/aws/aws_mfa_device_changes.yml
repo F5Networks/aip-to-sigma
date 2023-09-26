@@ -1,0 +1,31 @@
+title: CloudTrail MFA Device Changes
+id: fb087074-436a-11ea-8a87-bbce5724c7d4
+status: stable
+description: Detects when a user makes MFA device changes. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable-overview.html
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/09/25
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'iam.amazonaws.com'
+        eventName: 
+            - 'CreateVirtualMFADevice'
+            - 'DeactivateMFADevice'
+            - 'DeleteVirtualMFADevice'
+            - 'EnableMFADevice'
+            - 'ResyncMFADevice'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Legitimate MFA deivce changes from known users
+level: medium
