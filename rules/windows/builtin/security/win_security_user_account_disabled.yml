@@ -1,0 +1,23 @@
+title: User Account Was Disabled
+id: 0ead086a-7e6c-11ea-804f-5de42c98f38b
+status: stable
+description: Detects when a user account is disabled. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4725
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/27
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4725
+    condition: selection
+fields:
+    - TargetUserName
+    - TargetDomainName
+    - SubjectDomainName
+    - SubjectUserName
+falsepositives:
+    - Admin users disabling inactive accounts
+level: medium
