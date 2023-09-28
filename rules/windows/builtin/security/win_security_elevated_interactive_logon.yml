@@ -1,0 +1,28 @@
+title: Elevated Successful Interactive Logon
+id: 33a2b3b3-7e6c-11ea-b74b-958043a9a408
+status: stable
+description: Detects when a user interactively and successfully logs into or unlocks a system with elevated permissions. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/27
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4624
+        LogonType:
+            - 2
+            - 7 # Unlock
+            - 11
+        ElevatedToken: '%%1842'
+    condition: selection
+fields:
+    - TargetUserName
+    - TargetUserSid
+    - TargetDomainName
+    - WorkstationName
+falsepositives:
+    - Expected logons or unlocks during expected times
+level: medium

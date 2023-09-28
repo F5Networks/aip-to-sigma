@@ -1,0 +1,21 @@
+title: Windows Audit System Integrity Issue
+id: 062ea7d8-7e6c-11ea-825c-2d5e696d6dbd
+status: stable
+description: Detects when audit queues are filled and events must be discarded. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4612
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/27
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4612
+    condition: selection
+fields:
+    - TargetUserName
+    - TargetUserSid
+falsepositives:
+    - Hardware issues leading to resource exhaustion.
+level: medium

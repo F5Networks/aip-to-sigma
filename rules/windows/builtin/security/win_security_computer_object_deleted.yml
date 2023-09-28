@@ -1,0 +1,23 @@
+title: Computer Object Was Deleted
+id: 3833865d-7e6c-11ea-8c41-f381cfbf5564
+status: stable
+description: Detects when a computer object is deleted. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4743
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/27
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4743
+    condition: selection
+fields:
+    - TargetUserName # The computer object being deleted
+    - TargetDomainName
+    - SubjectDomainName
+    - SubjectUserName
+falsepositives:
+    - Admin users removing inactive computer objects
+level: medium

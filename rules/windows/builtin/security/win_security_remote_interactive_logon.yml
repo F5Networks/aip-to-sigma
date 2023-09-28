@@ -1,0 +1,28 @@
+title: Remote Interactive Logon
+id: 2b359103-7e6c-11ea-b74b-f12c2f619442
+status: stable
+description: Detects when a user successfully logs into a system without elevated privileges via RDP. Elevated privileges equate to administrator level access and is more sensitive. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/27
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID: 4624
+        LogonType:
+            - 10
+            - 12
+        ElevatedToken: '%%1843'
+    condition: selection
+fields:
+    - TargetUserName
+    - TargetUserSid
+    - TargetDomainName
+    - WorkstationName
+    - IpAddress
+falsepositives:
+    - Expected logons from expected IP addresses during expected times
+level: medium

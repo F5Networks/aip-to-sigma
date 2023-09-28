@@ -1,0 +1,27 @@
+title: Security Group Management Local Group Modified
+id: 1944ac8b-7e6c-11ea-8c41-7dd0d4af935a
+status: stable
+description: Detects when a local security-enabled group is created, deleted or modified. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/understand-security-groups
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-security-group-management
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/09/20
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventID:
+            - 4731 # Group Creation
+            - 4734 # Group Deletion
+            - 4735 # Group Modification
+    condition: selection
+fields:
+    - TargetUserName # This is the group being acted upon
+    - TargetDomainName
+    - SubjectUserName
+    - SubjectDomainName
+falsepositives:
+    - Changes by authorized users
+level: medium
