@@ -1,0 +1,31 @@
+title: ELB Target Changes
+id: 039290c0-436b-11ea-b0d8-b5a98c28ca5a
+status: stable
+description: Detects changes in ELB targets and target groups. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-target-groups.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/09/28
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'elasticloadbalancing.amazonaws.com'
+        eventName: 
+            - 'CreateTargetGroup'
+            - 'DeleteTargetGroup'
+            - 'DeregisterTargets'
+            - 'ModifyTargetGroup'
+            - 'ModifyTargetGroupAttributes'
+            - 'RegisterTargets'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to ELB targets and/or target groups
+level: low

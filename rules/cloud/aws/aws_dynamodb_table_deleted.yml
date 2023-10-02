@@ -1,0 +1,25 @@
+title: DynamoDB Table Deleted
+id: fd60914d-436a-11ea-ab95-374a342ec6b9
+status: stable
+description: Detects when a DynamoDB table is deleted. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_DeleteTable.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/09/28
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'dynamodb.amazonaws.com'
+        eventName: 'DeleteTable' 
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized user deleted an unneeded table
+level: low

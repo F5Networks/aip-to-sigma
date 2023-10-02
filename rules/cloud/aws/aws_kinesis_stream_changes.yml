@@ -1,0 +1,27 @@
+title: Kinesis Stream Changes
+id: 03581fa4-436b-11ea-b06b-059e460a8e70
+status: stable
+description: Detects changes to Kinesis streams. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/streams/latest/dev/introduction.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/09/28
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventName: 
+            - 'CreateStream'
+            - 'DeleteStream'
+            - 'UpdateStream'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to Kinesis streams
+level: low
