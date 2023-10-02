@@ -1,0 +1,25 @@
+title: Lambda Function Deleted
+id: 0165029a-436b-11ea-a446-d34e98ae9a0d
+status: stable
+description: Detects when a Lambda function has been deleted. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/lambda/latest/dg/API_DeleteFunction.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/09/28
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'lambda.amazonaws.com'
+        eventName: 'DeleteFunction'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized deletion of unneeded Lambda functions
+level: low

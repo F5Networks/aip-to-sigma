@@ -1,0 +1,45 @@
+title: WAF Changes
+id: 03a31fae-8ca0-11eb-b07c-e7891a4c24ba
+status: stable
+description: Detects when WAF IPsets, permissions, rules, ACLs, resources, configurations, or sets are changes. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-awswaf.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/09/28
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'waf.amazonaws.com'
+        eventName: 
+            - 'CreateIPSet'
+            - 'AssociateWebACL'
+            - 'CreateRegexPatternSet'
+            - 'CreateRuleGroup'
+            - 'CreateWebACL'
+            - 'DeleteFirewallManagerRuleGroups'
+            - 'DeleteIPSet'
+            - 'DeleteLoggingConfiguration'
+            - 'DeletePermissionPolicy'
+            - 'DeleteRegexPatternSet'
+            - 'DeleteRuleGroup'
+            - 'DeleteWebACL'
+            - 'PutLoggingConfiguration'
+            - 'PutPermissionPolicy'
+            - 'TagResource'
+            - 'UntagResource'
+            - 'UpdateIPSet'
+            - 'UpdateRegexPatternSet'
+            - 'UpdateRuleGroup'
+            - 'UpdateWebACL'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to WAF permissions, rules and resources. 
+level: medium

@@ -1,0 +1,25 @@
+title: GetCallerIdentity was called
+id: 031c763f-436b-11ea-b0d8-9956d19f96b6
+status: stable
+description: Detects when GetCallerIdentity was called. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/STS/latest/APIReference/API_GetCallerIdentity.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/09/28
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'sts.amazonaws.com'
+        eventName: 'GetCallerIdentity'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized users/programs make GetCallerIdentity calls.
+level: low

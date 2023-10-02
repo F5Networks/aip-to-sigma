@@ -1,0 +1,28 @@
+title: KMS Key Alias Activity
+id: ba5e3f9c-de54-11eb-a4cb-d7f38c3f89b6
+status: stable
+description: Detects changes to KMS key alias. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/kms/latest/developerguide/kms-alias.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/09/28
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'kms.amazonaws.com'
+        eventName: 
+            - 'CreateAlias'
+            - 'DeleteAlias'
+            - 'UpdateAlias'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to KMS alias
+level: low
