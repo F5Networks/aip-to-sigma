@@ -1,0 +1,80 @@
+title: Possible Data Exfiltration
+id: e03aef58-3814-11e8-8c49-0b14dfd3bc45
+status: stable
+description: Detects outbound file transfers to WAN by users using programs such as netcat, scp, wget or rsync. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/02
+logsource:
+    product: linux
+    category: network_connection
+detection:
+    selection_exe_nc:
+        Image|endswith: '/nc'
+    selection_exe_curl:
+        Image|endswith: '/curl'
+        CommandLine|contains:
+            - '-F'
+            - '-T'
+    selection_exe_wget:
+        Image|endswith: '/wget'
+        CommandLine|contains:
+            - '--header'
+            - '--post-data'
+            - '--post-file'
+    selection_exe_ftp:
+        Image|endswith: '/ftp'
+        CommandLine|contains:
+            - 'put'
+            - 'mput'
+    selection_exe_sftp:
+        Image|endswith: '/sftp'
+        CommandLine|contains: 'put'
+    selection_exe_scp:
+        Image|endswith: '/scp'
+        CommandLine|contains:
+            - '-r'
+            - '@'
+        CommandLine|contains: ':'
+    selection_exe_rsync:
+        Image|endswith: '/rsync'
+        CommandLine|contains|all:
+            - '@'
+            - ':'
+    selection_exe_shell:
+        Image|endswith:
+            - '/sh'
+            - '/bash'
+            - '/dash'
+            - '/zsh'
+            - '/ksh'
+    filter_lan_local:
+        DestinationIp|cidr:
+            - '10.0.0.0/8'
+            - '192.168.0.0/16'
+            - '172.16.0.0/12'
+            - '100.64.0.0/10' # Carrier grade NAT
+            - '::ffff:192.168.0.0/112' #IPv6 formatted IPv4 address
+            - '::ffff:10.0.0.0/104'
+            - '::ffff:172.16.0.0/108'
+            - '::ffff:100.64.0.0/106'
+            - 'FD00::/8'
+            - '127.0.0.1/32'
+            - '127.0.0.53/32' # DNS in some cloud providers
+            - '169.254.169.253/32' # Cloud provider metadata
+            - '169.254.169.254/32' # Cloud provider metadata
+            - '169.254.169.123/32' # NTP in some cloud providers
+            - 'FE80::/10'
+            - '::ffff:127.0.0.1/128'
+            - '::ffff:169.254.169.253/128'
+            - '::ffff:169.254.169.254/128'
+            - '::ffff:169.254.169.123/128'
+    condition: 1 of selection_exe* and not filter_lan_local
+fields:
+    - User
+    - Image
+    - CommandLine
+    - DestinationIp
+falsepositives:
+    - Legitimate data movement to WAN such as moving data between servers or uploading to SaaS providers
+level: medium
