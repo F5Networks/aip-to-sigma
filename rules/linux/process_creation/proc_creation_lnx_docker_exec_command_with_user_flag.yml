@@ -1,0 +1,27 @@
+title: Docker Exec Command with User Flag
+id: 17a72bf3-94f5-11e8-8a9e-35c5a98ad15f
+status: stable
+description: Detects when "--user" is passed during a "docker exec" which executes the command as the specified user. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L2_v1.0.0.audit:e770435cb53a82fc9ce75bb35ac2b441
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/04
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker exec'
+            - 'docker container exec'
+    selection_user:
+        CommandLine|contains: '--user'
+    condition: selection and selection_user
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Commands that need to be executed as specific users
+level: low
