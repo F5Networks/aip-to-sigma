@@ -1,0 +1,23 @@
+title: Docker Base Device Size Changed
+id: 15e3d112-94f5-11e8-8a9e-991fb500340b
+status: stable
+description: Detects when the base device size in Docker is changed from default which may lead to resource exhaustion. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L2_v1.0.0.audit:85a0717318b9de1a43365f7bde91d11b
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/05
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/dockerd'
+        CommandLine|contains: '--storage-opt dm.basesize'
+    condition: selection
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Use cases where the container needs to be over 10G in size
+level: low
