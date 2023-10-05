@@ -1,0 +1,24 @@
+title: Docker Default ulimit Not Set
+id: 16963070-94f5-11e8-8a7e-5909776d9c84
+status: stable
+description: Detects when the "--default-ulmit" flag is not passed in Docker. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:228fa471a2bd5fd269fdc96a5dd652b1
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/04
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/dockerd'
+    filter:
+        CommandLine|contains: '--default-ulimit'
+    condition: selection and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - ulimit set on a per container basis
+level: medium
