@@ -1,0 +1,25 @@
+title: Docker Swarm Manager Running with Auto-Lock Disabled
+id: 12f19324-94f5-11e8-b16c-eddb14ca8299
+status: stable
+description: Detects when Docker Swarm Manager is being run without mutual TLS encryption key protection. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:709e8822e4a5b9061c4cb1aaa94155ff
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/05
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains: 'docker swarm init'
+    filter: 
+        CommandLine|contains: '--autolock'
+    condition: selection and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Deployments where manual intervention after a restart would impact availability
+level: low
