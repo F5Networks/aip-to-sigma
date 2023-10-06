@@ -1,0 +1,25 @@
+title: SSM Session Terminated
+id: 07a72ea6-436b-11ea-b0d8-a5a9dbe3df91
+status: stable
+description: Detects when an SSM session is terminated. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-sessions-end.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/02
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ssm.amazonaws.com'
+        eventName: 'TerminateSession'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized and expected SSM session ends
+level: low
