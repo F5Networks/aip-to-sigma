@@ -1,0 +1,28 @@
+title: ECS service changes
+id: fb38f67d-436a-11ea-b06b-d9b02dcef429
+status: stable
+description: Detects creations, deletions and updates to ECS services. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/02
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName: 
+            - 'CreateService'
+            - 'DeleteService'
+            - 'UpdateService'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to services from known users/services
+level: low

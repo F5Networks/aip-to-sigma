@@ -1,0 +1,31 @@
+title: VPC Subnet Changes
+id: 058c1716-436b-11ea-880a-ddc41ef5fd2d
+status: stable
+description: Detects when a VPC subnet is created, deleted or modified. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/02
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName: 
+            - 'AssociateSubnetCidrBlock'
+            - 'CreateDefaultSubnet'
+            - 'CreateSubnet'
+            - 'DeleteSubnet'
+            - 'DisassociateSubnetCidrBlock'
+            - 'ModifySubnetAttribute'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to VPC subnets from known users/services
+level: low
