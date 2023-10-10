@@ -1,0 +1,25 @@
+title: ECR Delete Repository
+id: 0741ddda-436b-11ea-b6b3-b38baa60189d
+status: stable
+description: Detects when an ECR respository is deleted. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-delete.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/09
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecr.amazonaws.com'
+        eventName: 'DeleteRepository'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authoirzed repository deletions from known users/services
+level: low

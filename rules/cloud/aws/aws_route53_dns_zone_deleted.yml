@@ -1,0 +1,25 @@
+title: Route53 DNS Zone Deleted
+id: ffc27665-436a-11ea-91a6-8f4149feda02
+status: stable
+description: Detects when a DNS zone was deleted. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DeleteHostedZone.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/09
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'route53.amazonaws.com'
+        eventName: 'DeleteHostedZone'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized deleted of hosted zone that is not critial to operations
+level: low
