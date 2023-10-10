@@ -1,0 +1,26 @@
+title: Docker Set container CPU priority appropriately
+id: 166de8a8-94f5-11e8-b16c-07c1a1ed319f
+status: stable
+description: Detects when CPU sharing is not enabled which may cause resource exhaustion. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:26aac0167da3c9a6478fb9d32cb78438
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/09
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains: 'docker swarm init'
+    filter:
+        CommandLine|contains:
+            - '--cpu-shares'
+            - '-c'
+    condition: selection and not filter 
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+level: medium
