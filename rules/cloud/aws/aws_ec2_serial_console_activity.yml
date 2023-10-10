@@ -1,0 +1,32 @@
+title: EC2 Serial Console Activity
+id: 1b3a4dc3-2777-11ec-b07c-cbf88dacc940
+status: stable
+description: Detects multiple serial console actions includeing screenshots, status check and reading the SSH public key. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_GetConsoleScreenshot.html
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_GetSerialConsoleAccessStatus.html
+    - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_EnableSerialConsoleAccess.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/09
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 
+            - 'ec2-instance-connect.amazonaws.com'
+            - 'ec2.amazonaws.com'
+        eventName: 
+            - 'GetConsoleScreenshot'
+            - 'GetSerialConsoleAccessStatus'
+            - 'SendSerialConsoleSSHPublicKey'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized EC2 console activity from an approved user
+level: medium

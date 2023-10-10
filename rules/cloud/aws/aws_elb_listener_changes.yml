@@ -1,0 +1,28 @@
+title: ELB Listener Changes
+id: 04ad9daf-436b-11ea-880a-158f062b44fc
+status: stable
+description: Detects changes to ELB listenrs. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-listeners.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/09
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'elasticloadbalancing.amazonaws.com'
+        eventName: 
+            - 'CreateListener'
+            - 'DeleteListener'
+            - 'ModifyListener'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorizred changes to ELB listeners by authorized users/services
+level: low

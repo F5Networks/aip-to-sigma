@@ -1,0 +1,29 @@
+title: ECS Task State Changes
+id: 0704faf8-436b-11ea-880a-ffb245d9ee4c
+status: stable
+description: Detects changes, stops and startes to ECS tasks. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_cwe_events.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/09
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName: 
+            - 'RunTask'
+            - 'StartTask'
+            - 'StopTask'
+            - 'SubmitTaskStateChange'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to ECS states from known users/services
+level: low

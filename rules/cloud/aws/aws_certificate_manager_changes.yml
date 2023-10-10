@@ -1,0 +1,30 @@
+title: Certificate Manager Changes
+id: 03760806-436b-11ea-a446-2d38c8c38364
+status: stable
+description: Detects changes to certificates. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/09
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'acm.amazonaws.com'
+        eventName: 
+            - 'DeleteCertificate'
+            - 'ExportCertificate'
+            - 'ImportCertificate'
+            - 'RequestCertificate'
+            - 'UpdateCertificateOptions'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized and expected changes to certifications from known users/services
+level: medium
