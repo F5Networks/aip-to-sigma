@@ -1,0 +1,23 @@
+title: Docker Legacy Storage Driver Usage
+id: 148922bc-94f5-11e8-a7fe-998384ecefbe
+status: stable
+description: Detects when the legacy "aufs" storage driver is used. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:3c24faab3582007c71fc6fafc2e551dc
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/09
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/dockerd'
+        CommandLine|contains: '--storage-driver aufs'
+    condition: selection
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - AUFS is the only storage driver that allows containers to share executable and shared library memory.
+level: low
