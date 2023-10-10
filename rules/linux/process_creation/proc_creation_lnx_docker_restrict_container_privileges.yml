@@ -1,0 +1,27 @@
+title: Docker Restrict Container from Acquiring Additional Privileges
+id: 18c4a9e4-94f5-11e8-8a9e-8d9d5a9812d8
+status: stable
+description: Detects when the no_new_priv bit is not set which may allow children process additional privileges via suid or sgid bits. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:ad29f1459362152272392154b60e43bf
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/09
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    filter:
+        CommandLine|contains: '--security-opt=no-new-privileges'
+    condition: selection and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Use of SELinux in the environment as no_new_priv prevents LSMs like SELinux from transitioning to process labels that have access not allowed to the current process
+level: low
