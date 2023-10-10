@@ -1,7 +1,7 @@
 # AIP To Sigma
 
 ## Description
-This project contains rules from F5 Distributed Cloud App Infrastructure Protection (AIP) in the [Sigma](https://github.com/SigmaHQ/sigma) format. Sigma is a "Generic Signature Format for SIEM Systems" and could best be summed up as "Sigma is for log files what Snort is for network traffic and YARA is for files". 
+This project contains rules from F5 Distributed Cloud App Infrastructure Protection (AIP) in the [Sigma](https://sigmahq.io/) format. Sigma is a "Generic Signature Format for SIEM Systems" and could best be summed up as "Sigma is for log files what Snort is for network traffic and YARA is for files". 
 
 Since AIP reached End-Of-Sale in June 2023 and will reach End-Of-Life in June 2024 the AIP Rules Team decided to create Sigma version of as many of our rules as possible so customers can take advantage of our rules in other products after June 2024. If any changes are made to existing rules in the AIP product or if new rules are created those changes will be pushed to this project shortly after. 
 
@@ -10,7 +10,7 @@ These rules are provided "as is" though every effort has been made to make them 
 ## Usage
 Rules can be converted into queries using the following tools:
 - The [Sigma CLI](https://github.com/SigmaHQ/sigma-cli)
-- [Uncoder.IO](https://uncoder.io/)
+- [Uncoder.IO](https://uncoder.io/) (Community Edition of UncoderAI requires registration with work e-mail)
 - If the Sigma CLI or Uncoder do not support your target query language it may be supported in [Sigma Legacy](https://github.com/SigmaHQ/legacy-sigmatools) tooling
 
 If you would like to look up the AIP version of a rule the `id` field matches up with the Rule ID in the AIP platform if you are subscribed to Managed Rules. 
