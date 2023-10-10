@@ -1,0 +1,24 @@
+title: Docker Userland Proxy is Enabled
+id: 117b6d2f-94f5-11e8-8a7e-319ae4302adb
+status: stable
+description: Detects when userland proxy is enabled for port forwarding from host to container. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:e14b014aab23758a21db2bd0139890cf
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/09
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/dockerd'
+    filter: 
+        CommandLine|contains: '--userland-proxy=false'
+    condition: selection and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Some systems with older Linux kernels may not be able to support hairpin NAT and therefore require the userland proxy service
+level: low
