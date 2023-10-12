@@ -1,0 +1,30 @@
+title: CloudTrail IAM User Changes
+id: fed0c32e-436a-11ea-aef6-c151b5231802
+status: stable
+description: Detects IAM user changes. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_manage.html
+author: Bria Atchley - SOC Analyst, F5 Inc
+date: 2023/09/30
+logsource: 
+    product: aws 
+    service: cloudtrail 
+detection: 
+    selection: 
+        eventSource: 'iam.amazonaws.com'
+        eventName:
+            - 'CreateUser'
+            - 'DeleteUser'
+            - 'UpdateUser'
+            - 'RemoveUserFromGroup'
+            - 'AddUserToGroup'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized user changes in IAM 
+level: medium
