@@ -1,0 +1,25 @@
+title: EC2 Serial Console Disabled
+id: b3d00029-2776-11ec-b07c-0f276417a8a3
+status: stable
+description: Detects when access to an EC2 serial console is disabled. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configure-access-to-serial-console.html
+    - https://docs.aws.amazon.com/cli/latest/reference/ec2/disable-serial-console-access.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/10
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventName: 'DisableSerialConsoleAccess'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized users disabling an unneeded serial console access
+level: medium
