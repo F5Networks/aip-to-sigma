@@ -1,0 +1,25 @@
+title: ECS UpdateContainerAgent
+id: fbd95532-436a-11ea-a2b9-219b6a6b83ed
+status: stable
+description: Detects when UpdateContainerAgent is called. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_UpdateContainerAgent.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/10
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecs.amazonaws.com'
+        eventName: 'UpdateContainerAgent'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized UpdateContainerAgent calls from known users/services
+level: low

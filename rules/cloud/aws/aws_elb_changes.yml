@@ -1,0 +1,31 @@
+title: ELB Changes
+id: fdfa8725-436a-11ea-9da3-f3b2432804e9
+status: stable
+description: Detects changes to an ELB including creation, deletions and modifications. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/elasticloadbalancing/
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/10
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'elasticloadbalancing.amazonaws.com'
+        eventName: 
+            - 'CreateLoadBalancer'
+            - 'DeleteLoadBalancer'
+            - 'ModifyLoadBalancerAttributes'
+            - 'SetIpAddressType'
+            - 'SetSecurityGroups'
+            - 'SetSubnets'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to ELBs from known users/services
+level: low

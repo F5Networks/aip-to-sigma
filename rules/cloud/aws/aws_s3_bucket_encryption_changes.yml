@@ -1,0 +1,27 @@
+title: S3 Bucket Encryption Changes
+id: d6d97166-e5ad-11ec-8b40-97ae7bf83a60
+status: stable
+description: Detects changes to S3 bucket encryption configuration. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-encryption.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/10
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName: 
+            - 'PutBucketEncryption'
+            - 'DeleteBucketEncryption'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to bucket encryption configuration from known users/services
+level: medium
