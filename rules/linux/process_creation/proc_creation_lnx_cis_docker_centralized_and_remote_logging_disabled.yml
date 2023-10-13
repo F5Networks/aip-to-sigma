@@ -1,0 +1,33 @@
+title: Docker Centralized and Remote Logging Disabled
+id: 1219d0d8-94f5-11e8-b0cc-fb1b98feed3d
+status: stable
+description: Detects when centralized and remote logging is not enabled in Docker. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L2_v1.0.0.audit:af4a8d9bd505b8e6f404f6afeeb28445
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/13
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/dockerd'
+    filter:
+        CommandLine|contains:
+            - '--log-driver=syslog'
+            - '--log-driver=journald'
+            - '--log-driver=gelf'
+            - '--log-driver=fluentd'
+            - '--log-driver=awslogs'
+            - '--log-driver=splunk'
+            - '--log-driver=etwlogs'
+            - '--log-driver=gcplogs'
+    condition: selection and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Use of dockerd in an environment that does not require centralized logging
+    - Logging via third party tools
+level: low
