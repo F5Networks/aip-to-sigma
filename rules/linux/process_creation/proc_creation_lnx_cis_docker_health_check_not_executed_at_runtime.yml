@@ -1,0 +1,27 @@
+title: Docker Health Check Not Executed at Runtime
+id: 11bf2d9e-94f5-11e8-8a9e-77e8faa9f0ea
+status: stable
+description: Detects when a container health check is not executed at runtime. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:4acd8fe992c792283828614bb221d939
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/13
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    filter: 
+        CommandLine|contains: '--health-cmd='
+    condition: selection and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Container image contains a pre-defined HEALTHCHECK instruction
+level: medium
