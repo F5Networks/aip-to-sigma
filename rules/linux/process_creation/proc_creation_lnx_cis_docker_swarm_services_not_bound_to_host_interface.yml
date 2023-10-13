@@ -1,0 +1,25 @@
+title: Docker Swarm Services Not Bound To Specific Host Interface
+id: 12753749-94f5-11e8-b0cc-812087d24cdb
+status: stable
+description: Detects when a swarm is initialized without setting a value for "--listen-addr". Since the default value listens on all interfaces if a host has multiple network interfaces this may over expose the docker swarm services. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:7b5e1dd33fe418177b58fff72349c900
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/13
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains: 'docker swarm init'
+    filter:
+        CommandLine|contains: '--listen-addr'
+    condition: selection and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Docker swarm executed on a host with only one network interface
+level: medium
