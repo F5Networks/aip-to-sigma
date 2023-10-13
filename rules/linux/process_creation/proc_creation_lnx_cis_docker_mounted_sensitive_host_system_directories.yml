@@ -1,0 +1,41 @@
+title: Docker Mounted Sensitive Host System Directories
+id: 1351660b-94f5-11e8-a7fe-d54d6f24aaa7
+status: stable
+description: Detects when potentially sensitive directories are mounted in read-write mode. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:abec2c62679e1ddd15b272dd6b8aa26d
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/13
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_docker:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    selection_volume:
+        CommandLine|contains:
+            - '-v'
+            - 'volume-driver'
+            - '--volume'
+            - '--volumes-from'
+    selection_path:
+        CommandLine|contains:
+            - '/'
+            - '/boot'
+            - '/dev'
+            - '/etc'
+            - '/lib'
+            - '/proc'
+            - '/sys'
+            - '/usr'
+    condition: selection_docker and selection_volume and selection_path
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Unlikely
+level: high
