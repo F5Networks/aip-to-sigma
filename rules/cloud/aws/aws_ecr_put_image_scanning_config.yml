@@ -1,0 +1,25 @@
+title: ECR Put Image Scanning Configuration
+id: 098a1f42-436b-11ea-9b36-5389b04fd3db
+status: stable
+description: Detects when PutImageScanningConfiguration is called. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_PutImageScanningConfiguration.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecr.amazonaws.com'
+        eventName: 'PutImageScanningConfiguration'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to ECR image scanning configurations from known users/services
+level: low

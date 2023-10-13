@@ -1,0 +1,30 @@
+title: AWS Config Activity
+id: 69c17519-7a49-11ec-a065-e15f98c28000
+status: stable
+description: Detects any changes to AWS Configs. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'config.amazonaws.com'
+        eventName|startswith:
+          - 'Delete'
+          - 'Put'
+          - 'Start'
+          - 'Stop'
+          - 'Select' 
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to configurations from known users/services
+level: medium
