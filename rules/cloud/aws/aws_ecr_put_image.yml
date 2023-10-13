@@ -1,0 +1,24 @@
+title: ECR PutImage
+id: 076877e1-436b-11ea-b0d8-d51698d61df7
+status: stable
+description: Detects when an image is put into an ECR repository. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/12
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ecr.amazonaws.com'
+        eventName: 'PutImage'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized image puts from known users/services
+level: low

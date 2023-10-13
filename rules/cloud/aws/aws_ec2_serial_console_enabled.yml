@@ -1,0 +1,24 @@
+title: EC2 Serial Console Enabled
+id: 87ab3047-2776-11ec-9e1c-f1339c1ec378
+status: stable
+description: Detects when serial console has been enabled. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-serial-console.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/12
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventName: 'EnableSerialConsoleAccess'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized enablement from known users/services
+level: medium

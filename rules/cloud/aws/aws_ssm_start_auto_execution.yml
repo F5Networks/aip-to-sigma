@@ -1,0 +1,26 @@
+title: SSM Start Automation Execution
+id: 07c7d68a-436b-11ea-a446-cdd04aaff94a
+status: stable
+description: Detects when StartAutomationExecution is called. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_StartAutomationExecution.html
+    - https://docs.aws.amazon.com/systems-manager/latest/userguide/running-automations.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/12
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ssm.amazonaws.com'
+        eventName: 'StartAutomationExecution'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized execution of known and trusted code
+level: low

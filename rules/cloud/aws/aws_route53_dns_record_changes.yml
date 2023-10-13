@@ -1,0 +1,26 @@
+title: Route53 DNS Record Changes
+id: fbab8ed8-436a-11ea-ab95-592b8562c9a7
+status: stable
+description: Detects changes to DNS records in Route53. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-editing.html
+    - https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/12
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'route53.amazonaws.com'
+        eventName: 'ChangeResourceRecordSets'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes from known users/services
+level: medium

@@ -1,0 +1,25 @@
+title: SSM Start Session
+id: 07896d9e-436b-11ea-b06b-93d419fc7033
+status: stable
+description: Detects when an SSM session has been started. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-sessions-start.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/12
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ssm.amazonaws.com'
+        eventName: 'StartSession'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized users starting sessions
+level: low
