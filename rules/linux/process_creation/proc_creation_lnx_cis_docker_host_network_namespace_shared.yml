@@ -1,0 +1,27 @@
+title: Docker Host's Network Namespace Shared
+id: 150caaf0-94f5-11e8-8a9e-4ddfaa561520
+status: stable
+description: Detects when the "--net=host" argument is passed which allows for the container process to open low numbered ports on the host. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references: 
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:0a426209222f96d306a4758cc8e2376a
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/13
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_docker:
+        Image|endswith: '/docker'
+        Command|contains:
+            - 'docker run'
+            - 'docker container run'
+    selection_net:
+        Command|contains: '--net=host'
+    condition: selection_docker and selection_net
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Use cases where a container process needs to open low numbered ports on the host
+level: medium

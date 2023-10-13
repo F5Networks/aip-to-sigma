@@ -1,0 +1,25 @@
+title: Docker Swarm Mode Enabled
+id: 12b7493f-94f5-11e8-8a9e-4dad765897e5
+status: stable
+description: Detects when swarm mode is enabled on a Docker Engine instance which by default opens multiple ports. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:1bf32cd8fb5fa60ab19ead3f133b7abb
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/13
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker swarm init'
+            - 'docker swarm join'
+    condition: selection
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Situations where Docker Swarm Mode is required to be used
+level: medium
