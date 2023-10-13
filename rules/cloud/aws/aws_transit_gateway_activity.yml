@@ -1,0 +1,25 @@
+title: TransitGateway Activity
+id: 5dc81f1d-d5c2-11eb-95cf-5f869487c62a
+status: stable
+description: Detects activity related to TransitGateway. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/vpc/latest/tgw/what-is-transit-gateway.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/12
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName|contains: 'TransitGateway'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to TransitGateway from known users/services
+level: low
