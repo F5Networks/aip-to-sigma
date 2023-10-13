@@ -1,0 +1,29 @@
+title: Docker Exec Command with Privileged Flag
+id: 112c62bf-94f5-11e8-bded-c786a7d3a00e
+status: stable
+description: Detects when the privileged flag is passed during a docker exec. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L2_v1.0.0.audit:eac6d0a836a0481eb0afaaab08bdd121
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/12
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_exe:
+        Image|endswith: '/docker'
+    selection_exec:
+        CommandLine|contains:
+            - 'docker exec'
+            - 'docker container exec'
+    selection_priv:
+        CommandLine|contains:
+            - '--privileged'
+    condition: selection_exe and selection_exec and selection_priv
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Container started by authorized user requires elevated privileges.
+level: medium

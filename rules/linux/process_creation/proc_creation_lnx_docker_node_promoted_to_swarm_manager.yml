@@ -1,0 +1,25 @@
+title: Docker Node Promoted to Manager in Swarm
+id: 131cc1ea-94f5-11e8-b0cc-67c906e9f69e
+status: stable
+description: Detects when a node is promoted to a manager in Docker Swarm. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:90d539190ea7375c8c8a48833ec300b7
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/12
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'node promote'
+            - 'node update --role manager'
+    condition: selection
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Promotion of workers to managers by authorized users
+level: low
