@@ -1,0 +1,25 @@
+title: STS AssumeRole
+id: fe1bf22b-436a-11ea-8a87-6b64d3543dfb
+status: stable
+description: Detecrs when STS roles are assumed. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'sts.amazonaws.com'
+        eventName|startswith: 'AssumeRole'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized users and services assuming needed roles
+level: low
