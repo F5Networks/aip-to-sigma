@@ -1,0 +1,25 @@
+title: CloudTrail SSM Delete Component
+id: 096afeb6-436b-11ea-9da3-f7697214aef9
+status: stable
+description: Alerts when an AWS systems manager component is deleted.  Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-best-practices-delete-resources.html
+author: Bria Atchley - SOC Analyst, F5 Inc
+date: 2023/10/14
+logsource: 
+    product: aws 
+    service: cloudtrail 
+detection: 
+    selection: 
+        eventSource: 'ssm.amazonaws.com'
+        eventName|startswith: 'Delete'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized user changes in IAM 
+level: medium
