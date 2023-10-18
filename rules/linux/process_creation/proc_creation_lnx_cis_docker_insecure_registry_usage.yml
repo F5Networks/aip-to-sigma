@@ -1,0 +1,23 @@
+title: Docker Insecure Registry Usage
+id: 14b5b155-94f5-11e8-b16c-2982ac8a54d9
+status: stable
+description: Detects when an insecure private registry is used by the Docker daemon. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:7b293ce14fc3dd5902677c918878145f
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/16
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/dockerd'
+        CommandLine|contains: '--insecure-registry'
+    condition: selection
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Use of an insecure local registry
+level: medium
