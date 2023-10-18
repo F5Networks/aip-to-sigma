@@ -1,0 +1,23 @@
+title: Docker Ability to Make Changes to IPtables Disabled
+id: 16131e1d-94f5-11e8-a7fe-69f4e20da634
+status: stable
+description: Detects when the Docker daemon is not allowed to make changes to iptables. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:6da7c3ffc3f3523ac401f85dc1bffb7b
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/17
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/dockerd'
+        CommandLine|contains: '--iptables=false'
+    condition: selection
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Authorized users deciding to make manual changes to iptables instead of letting the daemon make the changes.
+level: low
