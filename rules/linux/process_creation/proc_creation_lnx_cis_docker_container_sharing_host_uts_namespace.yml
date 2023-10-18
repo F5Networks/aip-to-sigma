@@ -1,0 +1,27 @@
+title: Docker Do Not Share The Host's UTS Namespace
+id: 189a3e31-94f5-11e8-a7fe-f948785517c1
+status: stable
+description: Detects when UTS namespace of the host is shared with the container. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:4011a2f1faca2ba2a8e2a61d3463ceeb
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/17
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_docker:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    selection_uts:
+        CommandLine|contains: '--uts=host'
+    condition: selection_docker and selection_uts
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - If there is a business need for an authorized user to change the hostname of the host from inside of a container
+level: medium

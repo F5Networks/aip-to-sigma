@@ -1,0 +1,29 @@
+title: Docker Excessive Opened Ports on Container
+id: 17f2b3fe-94f5-11e8-b0cc-357b0f5bfd3e
+status: stable
+description: Detects when all the ports defined in a Dockerfile are opened on a container which may lead to uncessary ports being opened. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:7e37dce28003cadd869f9c3fa6dd1ec5
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/16
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_docker:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    selection_ports: 
+        CommandLine|contains:
+            - '-P'
+            - '--publish-all'
+    condition: selection_docker and selection_ports
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Dockerfile contains only the necessary ports
+level: medium

@@ -1,0 +1,27 @@
+title: Docker Host's IPC Namespace Shared
+id: 18172b80-94f5-11e8-a7fe-154effa7f453
+status: stable 
+description: Detects when the IPC Namespace on the host is shared with the container. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:52989fcfdaa62816565d2680a24129ba
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/17
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_docker:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker'
+            - 'docker container run'
+    selection_ipc:
+        CommandLine|contains: '--ipc=host'
+    condition: selection_docker and selection_ipc
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - While not recommended by the CIS high performance applications could benefit from sharing IPC namespaces
+level: medium

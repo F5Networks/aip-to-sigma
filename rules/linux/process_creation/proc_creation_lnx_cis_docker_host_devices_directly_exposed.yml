@@ -1,0 +1,27 @@
+title: Docker Host Devices Directly Exposed
+id: 0ddaee38-94f5-11e8-a7fe-cdd3be73cfcb
+status: stable
+description: Detects when a host device is directly exposed to a container at runtime. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:b28fd63763b47c7b3013d362238d99bc
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/16
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_docker:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    selection_dev:
+        CommandLine|contains: '--device=/dev'
+    condition: selection_docker and selection_dev
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Authorized user exposing the host device with correct permissions
+level: medium

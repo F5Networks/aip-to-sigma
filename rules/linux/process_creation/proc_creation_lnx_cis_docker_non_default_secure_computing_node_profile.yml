@@ -1,0 +1,31 @@
+title: Docker Non-Default Secure Computing Mode Profile Applied
+id: 0d4b5867-94f5-11e8-a7fe-415aedc7bd82
+status: stable
+description: Detects when the default seccomp profile is disabled. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:50147be1f26fcf1120989f6c006f3cc0
+    - https://docs.docker.com/engine/security/seccomp/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/16
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_dockerd: 
+        Image|endswith: '/dockerd'
+        CommandLine|contains: '--seccomp-profile'
+    selection_docker:
+        Image|endswith: '/docker'
+        CommandLine|contains|all: 
+            - '--security-opt'
+            - 'seccomp'
+    selection_unconfined:
+        CommandLine|contains: 'unconfined'
+    condition: (selection_dockerd or selection_docker) and selection_unconfined
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - The default profile in Docker 1.10 and greater blocks all syscalls so the default profile can be disabled if no custom profile is available. 
+level: medium

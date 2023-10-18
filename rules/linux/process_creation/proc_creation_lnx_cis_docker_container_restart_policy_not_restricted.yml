@@ -1,0 +1,31 @@
+title: Docker Container Restart Policy Not Restricted
+id: 11e52bda-94f5-11e8-a7fe-31d00f3cfc07
+status: stable
+description: Detects when a container does not have a restricted restart policy. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:a9767dc372aa5aef77341d529b42f18e
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/16
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_docker:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    selection_restart:
+        CommandLine|contains: '--restart'
+    filter:
+        CommandLine|contains:
+            - '--restart=on-failure:5'
+            - '--restart=no'
+    condition: selection_docker and selection_restart and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - A business reason that requires a container to have more than five restart attempts
+level: medium

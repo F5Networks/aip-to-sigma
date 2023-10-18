@@ -1,0 +1,27 @@
+title: Docker Host's Process Namespace Shared
+id: 14dfa79c-94f5-11e8-b0cc-6de622a2b3cd
+status: stable 
+description: Detects when a container is launched sharing the host's process namespace. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:d8103c4d49c814eeed17f48b360a75a3
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/16
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection_docker:
+        Image|endswith: '/docker'
+        CommandLine|contains:
+            - 'docker run'
+            - 'docker container run'
+    selection_pid: 
+        Image|contains: '--pid=host'
+    condition: selection_docker and selection_pid
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Authorized users starting containers that requires the use of a shared namespace. 
+level: medium
