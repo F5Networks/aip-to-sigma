@@ -1,0 +1,28 @@
+title: CloudTrail IAM SSH Key Changes
+id: ff58912e-436a-11ea-b06b-4beab1c78f0c
+status: stable 
+description: Detects on IAM SSH key changes.  Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
+author: Bria Atchley - SOC Analyst, F5 Inc
+date: 2023/10/18
+logsource: 
+    product: aws 
+    service: cloudtrail 
+detection: 
+    selection: 
+        eventSource: 'iam.amazonaws.com'
+        eventName: 
+        - 'UpdateSSHPublicKey'
+        - 'DeleteSSHPublicKey'
+        - 'UploadSSHPublicKey'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized user changes in IAM 
+level: low 
