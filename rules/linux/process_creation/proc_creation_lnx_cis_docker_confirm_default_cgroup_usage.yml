@@ -1,0 +1,23 @@
+title: Docker Non Default cgroup Used
+id: 15bc7232-94f5-11e8-bded-f1214de4eb72
+status: stable
+description: Detects when a the Docker daemon is using the non default cgroup setting. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L2_v1.0.0.audit:fa30c30594d940477e1275a932f13618
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/17
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/dockerd'
+        CommandLine|contains: '--cgroup-parent='
+    condition: selection
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Authorized users specifying a different cgroup than the default. 
+level: low
