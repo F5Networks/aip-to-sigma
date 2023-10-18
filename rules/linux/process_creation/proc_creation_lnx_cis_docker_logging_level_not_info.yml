@@ -1,0 +1,25 @@
+title: Docker Logging Level Not Set to "info"
+id: 1382fdcb-94f5-11e8-b0cc-c56a95738bcf
+status: stable
+description: Detects when the Docker Daemon logging level is not set to the "info" level. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.tenable.com/audits/items/CIS_Docker_1.13.0_L1_v1.0.0.audit:b953db7ec546cff7aa2404267675da28
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/17
+logsource:
+    product: linux
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '/dockerd'
+        CommandLine|contains: '--log-level'
+    filter:
+        CommandLine|contains: '--log-level=info'
+    condition: selection and not filter
+fields:
+    - Image
+    - User
+    - CommandLine
+falsepositives:
+    - Authorized users setting the "debug" log level for troublshooting
+level: low
