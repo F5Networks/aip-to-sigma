@@ -1,7 +1,7 @@
 title: CloudTrail IAM SAML Changes 
 id: ffe3450d-436a-11ea-a446-ed0d2a1ff61a
 status: stable 
-description: Detects on IAM SAML changes.  Licensed under DRL v1.1, original rule copyright F5, Inc.
+description: Detects IAM SAML changes.  Licensed under DRL v1.1, original rule copyright F5, Inc.
 references:
     - https://docs.aws.amazon.com/singlesignon/latest/userguide/authconcept.html
 author: Bria Atchley - SOC Analyst, F5 Inc
