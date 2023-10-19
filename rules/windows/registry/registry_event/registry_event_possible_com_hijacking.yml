@@ -1,0 +1,26 @@
+title: Registry Event Possible COM Hijacking
+id: fafbfccd-7e6b-11ea-addc-e95a13e61d06
+status: stable
+description: Detects when registry changes are made that could indicate COM references being hijacked by malicious actors. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/18
+tags:
+    - attack.t1546.015
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'HKCR\CLSID'
+            - 'Software\Classes\CLSID'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Legitimate and authorized programs defining COM objects in the registry
+level: medium
