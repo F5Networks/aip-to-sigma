@@ -1,0 +1,25 @@
+title: Route53 ListHostedZone
+id: ff392245-436a-11ea-b06b-f3948ea3f14d
+status: stable
+description: Detects when ListHostedZone is called. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/Route53/latest/APIReference/API_ListHostedZones.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'route53.amazonaws.com'
+        eventName: 'ListHostedZones'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized ListHostedZone calls from known users/services
+level: low
