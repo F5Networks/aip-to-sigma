@@ -1,0 +1,25 @@
+title: DynamoDB Table Created
+id: 06d9a611-436b-11ea-9b36-3f086a61dd34
+status: stable
+description: Detects when a table is created in DynamoDB. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SQLtoNoSQL.CreateTable.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'dynamodb.amazonaws.com'
+        eventName: 'CreateTable'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized table creations from known users/services
+level: low

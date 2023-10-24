@@ -1,0 +1,37 @@
+title: AWS Organizations Activity
+id: 6d91f3ca-0cb8-11ec-98b6-bbee0aea3cae
+status: stable
+description: Detects and changes related to AWS Organizations. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'organizations.amazonaws.com'
+        eventName|startswith: 
+            - 'Create'
+            - 'Delete'
+            - 'Deregister'
+            - 'Detach'
+            - 'Disable'
+            - 'Enable'
+            - 'Invite'
+            - 'Leave'
+            - 'Move'
+            - 'Register'
+            - 'Remove'
+            - 'Update'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes from known users/services
+level: low
