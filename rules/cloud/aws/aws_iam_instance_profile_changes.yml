@@ -1,0 +1,29 @@
+title: IAM Instance Profile Changes
+id: ff134acb-436a-11ea-8a87-d157a307408c
+status: stable
+description: Detects changes to IAM instance profiles. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'iam.amazonaws.com'
+        eventName: 
+          - 'AddRoleToInstanceProfile'
+          - 'CreateInstanceProfile'
+          - 'DeleteInstanceProfile'
+          - 'RemoveRoleFromInstanceProfile'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to instance profiles from known users/services
+level: low
