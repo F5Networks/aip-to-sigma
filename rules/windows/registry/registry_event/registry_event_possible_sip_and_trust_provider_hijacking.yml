@@ -1,0 +1,29 @@
+title: Registry Event Possible SIP and Trust Provider Hijacking
+id: 3a7befb5-7e6c-11ea-bb13-db1cc4cf28a4
+status: stable
+description: Detects registry modifications to SIP and trust providers. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://specterops.io/wp-content/uploads/sites/3/2022/06/SpecterOps_Subverting_Trust_in_Windows.pdf
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/24
+tags:
+    - attack.t1553.003
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SOFTWARE\Microsoft\Cryptography\OID'
+            - 'SOFTWARE\WOW6432Node\Microsoft\Cryptography\OID'
+            - 'SOFTWARE\Microsoft\Cryptography\Providers\Trust'
+            - 'SOFTWARE\WOW6432Node\Microsoft\Cryptography\Providers\Trust'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Legitimate changes to SIP and trust providers by authorized users
+level: medium
