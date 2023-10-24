@@ -1,0 +1,25 @@
+title: SSM Create Component
+id: 094c04ce-436b-11ea-880a-9bcdd050072a
+status: stable
+description: Detects when an SSM component is created. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/systems-manager/latest/userguide/documents-components.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ssm.amazonaws.com'
+        eventName|startswith: 'Create' 
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized component creation from known users/services
+level: low
