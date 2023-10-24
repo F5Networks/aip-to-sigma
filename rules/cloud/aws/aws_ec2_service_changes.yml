@@ -1,0 +1,42 @@
+title: EC2 Service Changes
+id: 00938191-436b-11ea-b06b-e37b262ea54f
+status: stable
+description: Detects any EC2 service changes. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection_source:
+        eventSource: 'ec2.amazonaws.com'
+    selection_1:
+        eventName|startswith:
+          - 'Modify'
+          - 'Delete'
+          - 'Create'
+    filter:
+        user:
+          - 'ElasticLoadBalancing'
+          - 'SLRManagement'
+    filter_2:
+        ip:
+          - 'elasticloadbalancing.amazonaws.com'
+          - 'rds.amazonaws.com' 
+    filter_3: 
+        userIdentity.arn|contains:
+          - 'assumed-role/AWSServiceRoleForElasticLoadBalancing/ElasticLoadBalancing'
+          - 'assumed-role/AWSServiceRoleForRDS/SLRManagement'
+    filter_4:  
+        eventName|contains: 'Tag'
+    condition: selection_source and selection_1 and not (filter and filter_2 and filter_3 and filter_4)
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized EC2 service changes from known users/services
+level: low
