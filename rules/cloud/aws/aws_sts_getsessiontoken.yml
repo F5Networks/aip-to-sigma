@@ -1,0 +1,25 @@
+title: STS GetSessionToken 
+id: 067edb01-436b-11ea-aef6-9951798903c3
+status: stable
+description: Detects when GetSessionToken is called. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+     - https://docs.aws.amazon.com/STS/latest/APIReference/API_GetSessionToken.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'sts.amazonaws.com'
+        eventName: 'GetSessionToken'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized calls from known users/services
+level: low
