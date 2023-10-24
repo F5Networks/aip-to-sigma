@@ -1,0 +1,28 @@
+title: Registry Event Possible Code Execution via Assistive Technology Helper
+id: fbc2f5e9-7e6b-11ea-804f-57bec347676d
+status: stable
+description: Detects when registry keys associated with Atbroker have been modified which would indicate abuse of Atbroker. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - http://www.hexacorn.com/blog/2016/07/22/beyond-good-ol-run-key-part-42/
+    - https://lolbas-project.github.io/lolbas/Binaries/Atbroker/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/24
+tags:
+    - attack.t1218
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'Software\Microsoft\Windows NT\CurrentVersion\Accessibility\Configuration'
+            - 'Software\Microsoft\Windows NT\CurrentVersion\Accessibility\ATs'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Authorized use of Atbroker by authorized users
+level: medium
