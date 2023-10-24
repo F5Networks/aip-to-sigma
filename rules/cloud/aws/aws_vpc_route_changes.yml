@@ -1,0 +1,37 @@
+title: VPC Route Changes
+id: 00fddc70-436b-11ea-b0d8-7f935818f40c
+status: stable
+description: Detects changes to VPC routing. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection_1:
+        eventSource: 'ec2.amazonaws.com'
+        eventName: 
+          - 'AssociateRouteTable'
+          - 'CreateVpnConnectionRoute'
+          - 'DeleteVpnConnectionRoute'
+          - 'DisassociateRouteTable'
+          - 'DisableVgwRoutePropagation'
+          - 'EnableVgwRoutePropagation'
+    selection_2:
+        eventSource: 'ec2.amazonaws.com'
+        eventName|startswith:
+          - 'CreateRoute'
+          - 'DeleteRoute'
+          - 'ReplaceRoute'
+    condition: selection_1 or selection_2
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized route changes from known users/services
+level: medium
