@@ -1,0 +1,25 @@
+title: STS GetFederationToken
+id: 020a1c74-436b-11ea-a446-a169961c980f
+status: stable
+description: Detects when GetFederationToken is called. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/STS/latest/APIReference/API_GetFederationToken.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'sts.amazonaws.com'
+        eventName: 'GetFederationToken'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized GetFederationToken calls from known users/services
+level: low
