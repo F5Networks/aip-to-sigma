@@ -1,0 +1,29 @@
+title: MFA Not Used
+id: fc274e11-436a-11ea-a446-4fa77203d886
+status: stable
+description: Detects when a user successfully logs in without using MFA. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+     - https://aws.amazon.com/iam/features/mfa/
+     - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa.html
+     - https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference-aws-console-sign-in-events.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/25
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'signin.amazonaws.com'
+        eventName: 'ConsoleLogin'
+        responseElements.ConsoleLogin: 'Success'
+        additionalEventData.MFAUsed: 'No'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - New users logging in for first time or users authorized with a different form of secondary authentication
+level: medium

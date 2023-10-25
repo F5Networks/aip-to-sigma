@@ -1,0 +1,30 @@
+title: IAM Group Changes
+id: 00558e46-436b-11ea-b0d8-b1f2ba8818d7
+status: stable
+description: Detects when there are changes to IAM groups including creation, deletion and modification. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/25
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'iam.amazonaws.com'
+        eventName: 
+          - 'CreateGroup'
+          - 'DeleteGroup'
+          - 'UpdateGroup'
+          - 'RemoveUserFromGroup'
+          - 'AddUserToGroup'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized IAM group changes from known users/services
+level: low
