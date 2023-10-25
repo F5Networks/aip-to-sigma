@@ -1,0 +1,33 @@
+title: S3 Bucket Policy Changes
+id: 03b2e9d1-436b-11ea-aef6-936e504e3161
+status: stable
+description: Detects when there are changes to S3 bucket policies. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-policies.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName|startswith: 
+            - 'Put'
+            - 'Delete'
+            - 'Create'
+        eventName|contains: 'Bucket'
+    filter:
+        eventName:
+          - 'CreateBucket'
+          - 'DeleteBucket'
+    condition: selection and not filter
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized bucket policy changes by known users/services
+level: medium
