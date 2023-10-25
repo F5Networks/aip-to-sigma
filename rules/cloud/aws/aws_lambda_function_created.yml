@@ -1,0 +1,25 @@
+title: Lambda Function Created
+id: fd0fd9a9-436a-11ea-a446-bd27ed62cffb
+status: stable
+description: Detects when a lambda function is created. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/lambda/latest/dg/API_CreateFunction.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'lambda.amazonaws.com'
+        eventName: 'CreateFunction'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized function created by known users/services 
+level: low
