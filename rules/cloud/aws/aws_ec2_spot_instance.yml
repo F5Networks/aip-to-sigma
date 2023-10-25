@@ -1,0 +1,26 @@
+title: EC2 Spot Instance Observed
+id: dab4ad20-277a-11ec-b509-a78dc0f3d6b3
+status: stable
+description: Detects when a spot instance is run. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-spot-instances.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/25
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName: 'RunInstances'
+        requestParameters.instanceMarketOptions.marketType: 'spot'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized creation of spot instances from known users/services
+level: medium
