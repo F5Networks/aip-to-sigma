@@ -1,0 +1,25 @@
+title: DynamoDB Backup Created
+id: 0619d84b-436b-11ea-ab95-af5b864fbc5c
+status: stable
+description: Detects when a DynamoDB backup is created. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/backuprestore_HowItWorks.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'dynamodb.amazonaws.com'
+        eventName: 'CreateBackup'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized backup creation from known users/services
+level: low
