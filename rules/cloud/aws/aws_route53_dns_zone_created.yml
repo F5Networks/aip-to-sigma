@@ -1,0 +1,25 @@
+title: Route53 DNS Zone Created
+id: 0033aedf-436b-11ea-880a-6d814367925f
+status: stable
+description: Detects when a DNS zone is created. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingHostedZone.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'route53.amazonaws.com'
+        eventName: 'CreateHostedZone'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized DNS zone created by a known user/service
+level: low
