@@ -1,0 +1,28 @@
+title: Registry Event Possible DLL Loading via Authentication Packages Registry Key
+id: 26c58cc9-7e6c-11ea-804f-2376f7740479
+status: stable
+description: Detects registry modifications to an area of the registry that control what authentication package DLLs are loaded. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/secauthn/authentication-packages?redirectedfrom=MSDN
+    - http://docplayer.net/20839173-Analysis-of-malicious-security-support-provider-dlls.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/26
+tags:
+    - attack.t1547.002
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SYSTEM\\\\CurrentControlSet\\\\Control\\\\Lsa'
+            - 'System\\\\CurrentControlSet\\\\Control\\\\Lsa'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Changes by authorized users
+level: medium
