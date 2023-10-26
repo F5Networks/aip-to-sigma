@@ -1,0 +1,28 @@
+title: Registry Event Possible DLL Loading via WinLogon Helper DLL Registry Key
+id: 10341d66-7e6c-11ea-a640-41e2f19de70d
+status: stable
+description: Detects registry edits related to the Winlogon helper programs. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/25
+tags:
+    - attack.t1547.004
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon'
+            - 'Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Winlogon'
+            - 'Software\Microsoft\Windows NT\CurrentVersion\Winlogon'
+            - 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Authorized users making changes to applications that run at logon.
+level: medium
