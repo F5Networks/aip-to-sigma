@@ -1,0 +1,32 @@
+title: Registry Event Possible UAC Bypass
+id: 23c3227a-7e6c-11ea-8c41-89803fa814bb
+status: stable
+description: Detects registry modifications that are indicative of UAC bypass techniques. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/application-security/application-control/user-account-control/how-it-works
+    - https://enigma0x3.net/2016/08/15/fileless-uac-bypass-using-eventvwr-exe-and-registry-hijacking/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/26
+tags:
+    - attack.t1548.002
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'Software\Classes\mscfile\shell\open\command'
+            - 'SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\control.exe'
+            - 'SOFTWARE\Classes\exefile\shell\runas\command\isolatedCommand'
+            - 'mscfile\shell\open\command'
+            - 'Software\Microsoft\Windows\CurrentVersion\App Paths\control.exe'
+            - 'exefile\shell\runas\command\isolatedCommand"'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Authorized users disabling UAC for business purposes. 
+level: medium
