@@ -1,0 +1,27 @@
+title: Registry Event Possible DLL Loading via Port Monitors Registry Key
+id: 30863174-7e6c-11ea-8c41-8d869778a538
+status: stable
+description: Detects when the registry entry for port monitors have been modified which will cause DLLs to be loaded by the print spooler service. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/win32/printdocs/addmonitor?redirectedfrom=MSDN
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/26
+tags:
+    - attack.t1547.010
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SYSTEM\\\\CurrentControlSet\\\\Control\\\\Print\\\\Monitors'
+            - 'System\\\\CurrentControlSet\\\\Control\\\\Print\\\\Monitors'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Authorized users adding port monitors
+level: medium
