@@ -1,0 +1,27 @@
+title: AWS Support Information Discovery
+id: 06ba100d-436b-11ea-9b36-8365c72d6b56
+status: stable
+description: Detects reads of AWS Support components. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/25
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'support.amazonaws.com'
+        eventName|startswith: 'Describe'
+    filter: 
+        userAgent: 'ssm.amazonaws.com'
+        userIdentity.arn: 'assumed-role/AWSServiceRoleForAmazonSSM/SSM_SLR_DATA_CRAWLER'
+    condition: selection and not filter
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized reads from known users/services
+level: low
