@@ -1,0 +1,31 @@
+title: SSM Information Discovery
+id: 08c37449-436b-11ea-b6b3-e361ae2ae323
+status: stable
+description: Detects reads of SSM service components. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/31
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ssm.amazonaws.com'
+        eventName|startswith:
+            - 'Describe'
+            - 'List'
+    filter:
+        userAgent|contains|all:
+           - 'aws-sdk-go'
+           - 'amazon-ssm-agent'
+        userIdentity.arn|endswith: 'assumed-role/AmazonSSMRoleForInstancesQuickSetup'
+    condition: selection and not filter
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized reads from known users/services
+level: low
