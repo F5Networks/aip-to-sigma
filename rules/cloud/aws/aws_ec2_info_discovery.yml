@@ -1,0 +1,38 @@
+title: EC2 Information Discovery
+id: 069d11ba-436b-11ea-a446-556a8d3b3afd
+status: stable
+description: Detects information discovery of EC2 components. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/26
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ec2.amazonaws.com'
+        eventName|startswith: 'Describe'
+    filter_1:
+        userAgent: 'autoscaling.amazonaws.com'
+        userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForAutoScaling/AutoScaling'
+    filter_2:
+        userAgent: 'config.amazonaws.com'
+        userIdentity.arn|endswith: 
+          - 'assumed-role/aws-controltower-ConfigRecorderRole/AWSConfig-Describe'
+          - 'assumed-role/tf-tower-config-role/AWSConfig-Describe'
+    filter_3:
+        userAgent: 'ecs.amazonaws.com'
+        userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForECS/ecs-eni-provisioning'
+    filter_4:
+        userAgent: 'trustedadvisor.amazonaws.com'
+        userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForTrustedAdvisor/TrustedAdvisor'
+    condition: selection and not (filter_1 or filter_2 or filter_3 or filter_4)
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized reads from known users/services
+level: low
