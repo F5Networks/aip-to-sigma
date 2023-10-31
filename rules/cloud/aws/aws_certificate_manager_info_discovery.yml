@@ -1,0 +1,32 @@
+title: Certifacte Manager Information Discovery
+id: 02d533f8-436b-11ea-b0d8-23c221298bd9
+status: stable
+description: Detects information discovery of certificate manager components. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/26
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventName: 
+          - 'DescribeCertificate'
+          - 'ListCertificates'
+          - 'ListTagsFromCertificate'
+    filter:
+        userAgent: 'config.amazonaws.com'
+        userIdentity.arn|endswith: 
+          - 'assumed-role/tf-tower-config-role/AWSConfig-Describe'
+          - 'assumed-role/AWSServiceRoleForConfig/AWSConfig-Describe'
+          - 'assumed-role/aws-controltower-ConfigRecorderRole/AWSConfig-Describe'
+    condition: selection and not filter
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized reads from known users/services
+level: low
