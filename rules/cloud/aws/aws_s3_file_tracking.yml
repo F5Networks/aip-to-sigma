@@ -1,0 +1,33 @@
+title: S3 File Tracking 
+id: 04cf56d9-436b-11ea-b06b-9b788651626c
+status: stable
+description: Detects on file changes to specified S3 buckets. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/01
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        eventName: 
+          - 'PutObjectAcl'
+          - 'GetObjectAcl'
+          - 'GetObject'
+          - 'PutObject'
+          - 'ListObjects'
+          - 'HeadObject'
+#Edit the YOURBUCKETNAME portion to include the bucket(s) you wish to track. bucketName should NOT include '.s3.amazonaws.com'. You can add multiple buckets using the listing format seen above in eventName. 
+        requestParameters.bucketName:
+          - 'YOURBUCKETNAME'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Designed to track changes across specified S3 files. 
+level: low
