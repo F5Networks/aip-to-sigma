@@ -1,0 +1,24 @@
+title: Computer Account Created
+id: 2ca945cd-7e6c-11ea-b74b-d75ee24343ba
+status: stable
+description: Detects when a computer account is created. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4741
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/02
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4741
+    condition: selection
+fields:
+    - TargetUserName
+    - TargetUserSid
+    - TargetDomainName
+    - SubjectUserName
+    - SubjectDomainName
+falsepositives:
+    - Expected computer account creations for known users/services
+level: medium
