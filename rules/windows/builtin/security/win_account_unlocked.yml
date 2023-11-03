@@ -1,0 +1,22 @@
+title: Account was Unlocked
+id: 3460acde-7e6c-11ea-b74b-19921e386c97
+status: stable
+description: Detects when an account was unlocked. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4767
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/03
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4767
+    condition: selection
+fields:
+  - TargetUserName
+  - TargetDomainName
+  - SubjectUserName
+falsepositives:
+    - Expected user account access
+level: medium

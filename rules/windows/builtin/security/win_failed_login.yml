@@ -1,0 +1,27 @@
+title: Failed Login
+id: 020bd9bf-7e6c-11ea-b563-6f5217c74457
+status: stable
+description: Detects when a login attempts fails. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4625
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/03
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4625
+    condition: selection
+fields:
+  - SubjectUserName
+  - SubjectDomainName
+  - TargetUserName
+  - FailureReason
+  - LogonType
+  - IpAddress
+  - IpPort
+  - WorkstationName
+falsepositives:
+    - Normal failed logins due to human error
+level: medium
