@@ -1,0 +1,23 @@
+title: User Account Name Changed
+id: 093b4c12-7e6c-11ea-804f-5f5086003b62
+status: stable
+description: Detects when a user account name is changed. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4781
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/02
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4781
+    condition: selection
+fields:
+    - OldTargetUserName
+    - NewTargetUserName
+    - TargetDomainName
+    - SubjectUserName
+falsepositives:
+    - Expected user account name modifications from users
+level: medium
