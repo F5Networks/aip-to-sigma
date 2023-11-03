@@ -1,0 +1,26 @@
+title: Computer Account Changed
+id: 03b6ca34-7e6c-11ea-9a29-093dee339959
+status: stable
+description: Detects when a computer account is changed. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4742
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/03
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4742
+    condition: selection
+fields:
+   - ComputerAccountChange
+   - TargetUserName
+   - TargetDomainName
+   - SubjectUserName
+   - SubjectDomainName
+   - SamAccountName
+   - DisplayName
+falsepositives:
+    - Expected account changes from known users/services
+level: medium
