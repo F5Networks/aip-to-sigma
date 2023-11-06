@@ -1,0 +1,23 @@
+title: Audit Policy Change
+id: 0f7bca7b-7e6c-11ea-b74b-97e9e65f754a
+status: stable
+description: Detects changes in system level audit policies. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+  - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4719
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/03
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4719
+    condition: selection
+fields:
+  - SubjectUserName
+  - SubjectDomainName
+  - CategoryId
+  - AuditPolicyChanges
+falsepositives:
+    - Expected audit policy changes from known users/services
+level: medium
