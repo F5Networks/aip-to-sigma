@@ -1,0 +1,25 @@
+title: User Account Modified 
+id: 126cd013-7e6c-11ea-bbc1-bf0352825a36
+status: stable
+description: Detects when a user account is modified. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4738
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/03
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4738
+    condition: selection
+fields:
+  - TargetUserName
+  - TargetDomainName
+  - SubjectUserName
+  - AccountExpires
+  - PasswordLastSet
+  - PrivilegeList
+falsepositives:
+    - Expected user account changes from known users/services
+level: medium
