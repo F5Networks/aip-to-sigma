@@ -1,0 +1,25 @@
+title: WMI Event Consume Bound to Filter Detected 
+id: 1dd0eb46-7e6c-11ea-bb13-3f394a13d939
+status: stable
+description: Detects when a WMI Event Consumer is bound to a filter. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+   - https://learn.microsoft.com/en-us/windows/win32/wmisdk/binding-an-event-filter-with-a-logical-consumer
+   - https://attack.mitre.org/techniques/T1047/
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/06
+logsource:
+    product: windows
+    category: wmi_event
+detection:
+    selection:
+        EventId: 21
+    condition: selection
+fields:
+  - EventType
+  - Operation
+  - User
+  - Filter
+  - Consumer
+falsepositives:
+  - Expected event consumer filters
+level: medium
