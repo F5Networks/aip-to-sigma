@@ -1,0 +1,25 @@
+title: System Time Change
+id: 38fdb51f-7e6c-11ea-b563-55ad61671995
+status: stable
+description: Detects when the system time is modified. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4616
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/03
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4616
+    condition: selection
+fields:
+  - SubjectUserName
+  - SubjectDomainName
+  - PreviousTime
+  - NewTime
+  - ProcessId
+  - ProcessName
+falsepositives:
+    - Expected system time changes from known users/services
+level: medium
