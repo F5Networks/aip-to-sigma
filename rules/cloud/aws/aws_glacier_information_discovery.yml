@@ -1,0 +1,26 @@
+title: CloudTrail Glacier Information Discovery 
+id: 026f1fbb-436b-11ea-a2b9-eb30eac9564d
+status: stable 
+description: Detects information discovery of Glacier service components.  Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/amazonglacier/latest/dev/audit-logging.html
+author: Bria Atchley - SOC Analyst, F5 Inc
+date: 2023/10/31
+logsource: 
+    product: aws 
+    service: cloudtrail 
+detection: 
+    selection: 
+        eventSource|startswith: 'glacier' 
+        eventSource|endswith: 'amazonaws.com'
+        eventName|startswith: 'List'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized record of actions taken by a user/ role
+level: low 
