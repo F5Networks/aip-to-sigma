@@ -1,7 +1,7 @@
 title: Outbound HTTPS
 id: 35e6b0a6-7e6c-11ea-bb13-4d436383dbaf
 status: stable
-description: Dtects outbound HTTPS traffic. Licensed under DRL v1.1, original rule copyright F5, Inc.
+description: Detects outbound HTTPS traffic. Licensed under DRL v1.1, original rule copyright F5, Inc.
 references:
   - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90003
 author: Levi Smith - SOC Analyst II, F5 Inc
@@ -13,7 +13,7 @@ detection:
     selection:
         EventId: 3
         DestinationPort: 443
-        Initited: 'true'
+        Initiated: 'true'
     condition: selection
 fields:
   - User
