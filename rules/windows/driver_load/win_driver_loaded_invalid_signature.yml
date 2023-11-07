@@ -1,0 +1,25 @@
+title: Sysmon - Driver Loaded with Invalid Signature
+id: 07b56ee5-7e6c-11ea-bb13-3d3d443531ef
+status: stable
+description: Detects when a driver is loaded with an invalid digital signature. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+  - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90006
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/06
+logsource:
+    product: windows
+    category: driver_load
+detection:
+    selection:
+        EventId: 6
+    filter:
+        SignatureStatus: 'Valid'
+    condition: selection and not filter
+fields:
+  - Signed
+  - ImageLoaded
+  - Signature
+  - SignatureStatus
+falsepositives:
+    - Install of trusted and known kernal drivers
+level: medium
