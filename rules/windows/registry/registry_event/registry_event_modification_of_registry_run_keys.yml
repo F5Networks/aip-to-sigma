@@ -1,0 +1,35 @@
+title: Registry Event Modification of Registry Run Keys
+id: fc8868f3-7e6b-11ea-804f-cb50e877fb9b
+status: stable
+description: Detects when the registry run keys are modified. This is a common way to get execution of a binary upon startup and is used for persistence. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/networking/windows-time-service/windows-time-service-top
+    - https://learn.microsoft.com/en-us/windows/win32/sysinfo/time-provider?redirectedfrom=MSDN
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/07
+tags:
+    - attack.t1547.001
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'Software\Microsoft\Windows\CurrentVersion\Run'
+            - 'Software\Microsoft\Windows\CurrentVersion\RunOnce'
+            - 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+            - 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce'
+            - 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx'
+            - 'Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
+            - 'Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+            - 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+            - 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\User Shell'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Legitimate changes to auto run registry keys by authorized users. 
+level: medium
