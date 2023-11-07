@@ -1,0 +1,25 @@
+title: WMI Event Consumer Detected
+id: 05533c0b-7e6c-11ea-b849-ddbebebe07a9
+status: stable
+description: Detects the creation of WMI consumers. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+  - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+  - https://attack.mitre.org/techniques/T1047/
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/06
+logsource:
+    product: windows
+    category: wmi_events
+detection:
+    selection:
+        EventId: 20
+    condition: selection
+fields:
+  - User
+  - Operation
+  - Name
+  - Type
+  - Destination
+falsepositives:
+    - Expected event consumers
+level: medium

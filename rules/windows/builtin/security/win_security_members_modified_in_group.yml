@@ -1,0 +1,25 @@
+title: Members Modified in Universal Group
+id: 2244e75f-7e6c-11ea-804f-b940bd37c6d2
+status: stable
+description: Detects when a member is modified in a universal group. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-security-group-management
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/02
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 
+          - 4756 #member was added
+          - 4757 #member was removed
+    condition: selection
+fields:
+   - MemberName
+   - TargetUserName
+   - TargetDomainName
+   - SubjectUserName
+falsepositives:
+    - Expected universal group managment from a knwon user 
+level: medium

@@ -1,0 +1,24 @@
+title: WMI Event Filter Detected 
+id: 0dd7690d-7e6c-11ea-8c41-f3744af59372
+status: stable
+description: Detects when an WMI event filter is created. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+   - https://learn.microsoft.com/en-us/windows/win32/wmisdk/creating-an-event-filter
+   - https://attack.mitre.org/techniques/T1047/
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/06
+logsource:
+    product: windows
+    category: wmi_event
+detection:
+    selection:
+        EventId: 19
+    condition: selection
+fields:
+  - User
+  - Operation
+  - Name
+  - Query
+falsepositives:
+    - Expected WMI event filers
+level: medium

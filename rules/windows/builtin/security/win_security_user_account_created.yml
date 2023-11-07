@@ -1,0 +1,25 @@
+title: User Account Created
+id: 1d145196-7e6c-11ea-b74b-3dc81fd11985
+status: stable
+description: Detects when a user account is created. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4720
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/03
+logsource:
+    product: windows
+    service: security
+detection:
+    selection:
+        EventId: 4720
+    condition: selection
+fields:
+  - TargetUserName
+  - TargetDomainName
+  - SubjectUserName
+  - PrivilegeList
+  - DisplayName
+  - AccountExpires
+falsepositives:
+    - Expected user account creations from known users/services
+level: medium
