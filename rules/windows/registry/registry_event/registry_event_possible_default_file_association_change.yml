@@ -1,0 +1,28 @@
+title: Registry Event Possible Default File Association Change
+id: 27997f52-7e6c-11ea-b563-8f8e259e0166
+status: stable
+description: Detects changes to default file associations that could be used to call arbitrary programs when a file is opened. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://support.microsoft.com/en-us/windows/change-which-programs-windows-7-uses-by-default-62fd162f-8c82-0436-806f-c60d69dcf495
+    - https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/assoc
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/03
+tags:
+    - attack.t1546.001
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FileExts'
+            - 'Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Authorized users making changes to file associations. 
+level: medium

@@ -1,0 +1,28 @@
+title: Registry Event Possible DLL Loading via Time Providers Registry Key
+id: 253ec680-7e6c-11ea-8c41-339411f28468
+status: stable
+description: Detects registry modification for time providers which are implemented with DLLs. An attacker can use this function to add a malicious DLL that will be launched at startup. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows-server/networking/windows-time-service/windows-time-service-top
+    - https://learn.microsoft.com/en-us/windows/win32/sysinfo/time-provider?redirectedfrom=MSDN
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/07
+tags:
+    - attack.t1547.003
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SYSTEM\CurrentControlSet\Services\W32Time\TimeProviders'
+            - 'System\CurrentControlSet\Services\W32Time\TimeProviders'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Legitimate use of time providers. 
+level: medium

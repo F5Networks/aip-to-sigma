@@ -1,0 +1,28 @@
+title: Registry Event Possible Application Shim"
+id: 3cb2a6b1-7e6c-11ea-addc-330417c6f445
+status: stable
+description: Detects modification to the application shim database registry keys which may be used to thwart operating system security protections such as UAC and others. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://files.brucon.org/2015/Tomczak_and_Ballenthin_Shims_for_the_Win.pdf
+    - https://www.elastic.co/blog/ten-process-injection-techniques-technical-survey-common-and-trending-process
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/03
+tags:
+    - attack.t1546.001
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags'
+            - 'Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Legitimate use of application shims by developers to ensure backwards compatibility. 
+level: medium
