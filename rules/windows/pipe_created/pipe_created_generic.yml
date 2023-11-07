@@ -1,0 +1,25 @@
+title: Sysmon - Pipe Created
+id: 375cae51-7e6c-11ea-bb13-35746ff7fcfe
+status: stable
+description: Detects when a named pipe is created. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+     - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90017
+     - https://learn.microsoft.com/en-us/windows/win32/ipc/named-pipes
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/07
+logsource:
+    product: windows
+    category: pipe_created
+detection:
+    selection:
+        EventId: 17
+    condition: selection
+fields:
+     - EventType
+     - PipeName
+     - Image
+     - User
+     - ProcessId
+falsepositives:
+    - Expected/authorized named pipe creation
+level: medium
