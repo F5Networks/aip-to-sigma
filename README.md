@@ -11,7 +11,9 @@ These rules are provided "as is" though every effort has been made to make them 
 Rules can be converted into queries using the following tools:
 - The [Sigma CLI](https://github.com/SigmaHQ/sigma-cli)
 - [Uncoder.IO](https://uncoder.io/) (Community Edition of UncoderAI requires registration with work e-mail)
+- [sigconverter.io](https://sigconverter.io/)
 - If the Sigma CLI or Uncoder do not support your target query language it may be supported in [Sigma Legacy](https://github.com/SigmaHQ/legacy-sigmatools) tooling
+- If you want to customize a rule and prefer a GUI to a text editor you can utilize the [SigmaHQ Rule Creation GUI](https://sigmahq.streamlit.app/)
 
 If you would like to look up the AIP version of a rule the `id` field matches up with the Rule ID in the AIP platform if you are subscribed to Managed Rules. 
 
