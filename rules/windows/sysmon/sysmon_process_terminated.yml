@@ -1,0 +1,21 @@
+title: Sysmon Process Terminated
+id: 2d63bc8b-7e6c-11ea-b74b-27afab27c300
+status: stable
+description: Detects when a process is terminated. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90005
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/08
+logsource:
+    product: windows
+    service: sysmon
+detection:
+    selection:
+        EventId: 5
+    condition: selection # If one is concerned about specific processes terminating a filter could be added
+fields:
+    - Image
+    - User
+falsepositives:
+    - Expected process termination
+level: low
