@@ -1,0 +1,22 @@
+title: Sysmon Process Access
+id: 36a8a153-7e6c-11ea-b74b-618bb3bb460e
+status: stable
+description: Detects all process access events. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90010
+    - https://github.com/trustedsec/SysmonCommunityGuide/blob/master/chapters/process-access.md
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/10/08
+logsource:
+    product: windows
+    service: sysmon
+detection:
+    selection:
+        EventId: 10
+    condition: selection
+fields:
+    - SourceUser
+    - SourceImage
+falsepositives:
+    - Legitimate process execution. It is strongly recommended to apply filters based on expected processes as this can be noisy. 
+level: medium
