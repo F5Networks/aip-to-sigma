@@ -1,0 +1,25 @@
+title: Sysmon Process Changed File Creation Time
+id: 1a00f7b3-7e6c-11ea-a640-c128ee8fb645
+status: stable
+description: Detects when a process has changed a file creation time which could be an indicator of timestomping. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/08
+tags:
+    - attack.t1070.006
+logsource:
+    product: windows
+    service: sysmon
+detection:
+    selection:
+        EventId: 2
+    condition: selection
+fields:
+    - User
+    - Image
+    - TargetFilename
+    - CreationUtcTime
+    - PreviousCreationUtcTime
+falsepositives:
+    - Installation of authorized software
+level: medium

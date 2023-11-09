@@ -1,0 +1,22 @@
+title: Sysmon Process Creation
+id: 1a00f7b3-7e6c-11ea-a640-c128ee8fb645
+status: stable
+description: Detects process creation. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90001
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/08
+logsource:
+    product: windows
+    service: sysmon
+detection:
+    selection:
+        EventId: 1
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Expected execution of authorized software
+level: low
