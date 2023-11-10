@@ -1,0 +1,25 @@
+title: Sysmon - Image Loaded
+id: 06ff3eb9-7e6c-11ea-9a29-21fef436c5e3
+status: stable
+description: Detects when a DLL module is loaded. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+  - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?source=Sysmon&eventID=7
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/10
+logsource:
+    product: windows
+    serice: sysmon
+detection:
+    selection:
+        EventId: 7
+    condition: selection
+fields:
+  - Image
+  - ImageLoaded
+  - Hashes
+  - Signed
+  - SignatureStatus
+  - ProcessId
+falsepositives:
+    - Expected DLL image loads from trusted resources
+level: medium
