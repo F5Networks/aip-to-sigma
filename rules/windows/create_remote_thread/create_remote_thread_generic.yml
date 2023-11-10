@@ -1,0 +1,28 @@
+title: Sysmon - Create Remote Thread
+id: 2ee6b2a6-7e6c-11ea-b74b-65e4b04700e1
+status: stable
+description: Detects when a process creates a thread in another process. Can be an indication of malware. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+  - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90008
+  - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/10
+logsource:
+    product: windows
+    service: sysmon
+detection:
+    selection:
+        EventId: 8
+    condition: selection
+fields:
+    - SourceProcessId
+    - SourceImage
+    - TargetProcessId
+    - TargetImage
+    - NewThreadId
+    - StartAddress
+    - StartModule
+    - StartFunction
+falsepositives:
+    - Expected thread creations from known/trusted programs
+level: medium
