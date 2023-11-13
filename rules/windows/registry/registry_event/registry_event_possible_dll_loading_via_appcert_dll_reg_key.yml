@@ -1,0 +1,27 @@
+title: Registry Event Possible DLL Loading via AppCert DLL Registry Key
+id: 3bfd394e-7e6c-11ea-b74b-6b34511094a3
+status: stable
+description: Detects registry modifications of AppCert DLLs registry keys which are loaded into every process that calls API functions that deal with process creation.. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.elastic.co/blog/ten-process-injection-techniques-technical-survey-common-and-trending-process
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/13
+tags:
+    - attack.t1546.009
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager'
+            - 'System\\\\CurrentControlSet\\\\Control\\\\Session Manager'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Legitimate use of AppCert DLLs by authorized users. 
+level: medium
