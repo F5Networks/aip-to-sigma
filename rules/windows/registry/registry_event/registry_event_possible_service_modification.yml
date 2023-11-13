@@ -1,0 +1,28 @@
+title: Registry Event Possible Service Modification
+id: 3b3afa28-7e6c-11ea-bbc1-c7cbb366b655
+status: stable
+description: Detects registry modifications of services. This can be abused to change binary paths and execute malicious software Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.mcafee.com/blogs/other-blogs/mcafee-labs/mcafee-uncovers-operation-honeybee-malicious-document-campaign-targeting-humanitarian-aid-groups/
+    - https://learn.microsoft.com/en-us/windows/win32/sysinfo/registry-key-security-and-access-rights?redirectedfrom=MSDN
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/13
+tags:
+    - attack.t1574.011
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SYSTEM\CurrentControlSet\Services'
+            - 'System\CurrentControlSet\Services'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Legitimate modification of service registry keys by authorized users. 
+level: medium
