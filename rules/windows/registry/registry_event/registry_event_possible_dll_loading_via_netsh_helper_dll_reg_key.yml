@@ -1,0 +1,27 @@
+title: Registry Event Possible DLL Loading via Netsh Helper DLL Registry Key
+id: 2604d4f4-7e6c-11ea-bbc1-e79850b1ee2e
+status: stable
+description: Detects registry modifications for Netsh Helper DLLs.  This can be used to add DLLs to proxy execute binaries.  This can be used for attacker persistence. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://htmlpreview.github.io/?https://github.com/MatthewDemaske/blogbackup/blob/master/netshell.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/13
+tags:
+    - attack.t1546.007
+logsource:
+    product: windows
+    category: registry_event
+detection:
+    selection:
+        TargetObject|contains:
+            - 'SOFTWARE\Microsoft\Netsh'
+            - 'Software\Microsoft\Netsh'
+    condition: selection
+fields:
+    - Image
+    - TargetObject
+    - User
+    - Details
+falsepositives:
+    - Legitimate use of Netsh by authorized users. 
+level: medium
