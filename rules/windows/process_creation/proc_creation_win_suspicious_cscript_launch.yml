@@ -1,0 +1,30 @@
+title: Suspicious CScript Launch
+id: 2a8ea2d2-7e6c-11ea-a9e3-c58758667cb5
+status: stable
+description: Detects when a scripting interpreter is launched by cmd.exe. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://lolbas-project.github.io/lolbas/Binaries/Cscript/
+    - https://lolbas-project.github.io/lolbas/Binaries/Wscript/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/14
+tags:
+    - attack.t1059
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image:
+            - 'C:\Windows\System32\cscript.exe'
+            - 'C:\Windows\System32\wscript.exe'
+        ParentImage: 'C:\Windows\System32\cmd.exe'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+    - ParentImage
+    - ParentCommandLine
+falsepositives:
+    - Legitimate use of scripting interpreters by authorized users. 
+level: medium
