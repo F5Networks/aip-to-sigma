@@ -1,0 +1,31 @@
+title: Possible Signed Binary Proxy Execution
+id: 32083e1a-7e6c-11ea-8c41-a5afb0724b07
+status: stable
+description: Detects usage of binaries that are Microsoft-signed and can be used to proxy commands in order to bypass signature based defenses. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://lolbas-project.github.io/lolbas/Binaries/Msiexec/
+    - https://lolbas-project.github.io/lolbas/Binaries/Mavinject/
+    - https://lolbas-project.github.io/lolbas/Binaries/Syncappvpublishingserver/
+    - https://lolbas-project.github.io/lolbas/Binaries/Odbcconf/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/11/13
+tags:
+    - attack.t1218
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: 
+            - '\msiexec.exe'
+            - '\mavinject.exe'
+            - '\SyncAppvPublishingServer.exe'
+            - '\odbcconf.exe'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Legitimate use of these binaries by authorized users.
+level: medium
