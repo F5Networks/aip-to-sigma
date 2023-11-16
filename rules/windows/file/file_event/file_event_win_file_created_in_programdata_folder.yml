@@ -12,7 +12,6 @@ logsource:
     category: file_event
 detection:
     selection:
-        EventId: 11
         TargetFilename|contains: '\ProgramData'
     condition: selection
 fields:
