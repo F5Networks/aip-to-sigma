@@ -1,0 +1,23 @@
+title: Sysmon - File Created in Team Folder
+id: 132e4b0c-7e6c-11ea-b563-c720a2d447c7
+status: stable
+description: Detects when a file is created in Microsoft Teams AppData folder. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+  - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+  - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/14
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|contains: 'AppData\Local\Microsoft\Teams\current'
+    condition: selection
+fields:
+  - Image
+  - TargetFilename
+  - ProcessId  
+falsepositives:
+    - Expected file creations from known users/services
+level: medium

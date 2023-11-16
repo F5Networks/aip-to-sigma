@@ -1,0 +1,23 @@
+title: Sysmon - File Created in ProgramData Folder
+id: 17b55999-7e6c-11ea-a9e3-f18266f86ee0
+status: stable
+description: Detects when a file is created in the PrgramData folder. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+  - https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
+  - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90011
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/11/14
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|contains: '\ProgramData'
+    condition: selection
+fields:
+  - Image
+  - TargetFilename
+  - ProcessId  
+falsepositives:
+    - Expected file creation from known users/services
+level: medium
