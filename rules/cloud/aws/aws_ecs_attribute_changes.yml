@@ -1,0 +1,27 @@
+title: ECS Attribute Changes 
+id: fc7b88af-436a-11ea-a446-2d0d2f33275e
+status: stable 
+description: Detects ECS attribute has been created, updated of deleted.  Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-placement-constraints.html
+author: Bria Atchley - SOC Analyst, F5 Inc
+date: 2023/12/05
+logsource: 
+    product: aws 
+    service: cloudtrail
+detection: 
+    selection: 
+        eventSource: 'ecs.amazonaws.com'
+        eventName: 
+            - 'PutAttributes'
+            - 'DeleteAttributes'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to ECS attributes
+level: low
