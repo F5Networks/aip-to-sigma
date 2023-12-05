@@ -1,0 +1,31 @@
+title: Possible Lateral Movement Tools
+id: 02e9b5c9-7e6c-11ea-804f-93dcef91c8ec
+status: stable
+description: Detects use of remote execution tools which may be used for lateral movement. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://attack.mitre.org/software/S0029/
+    - https://github.com/kavika13/RemCom
+    - https://arista.my.site.com/AristaCommunity/s/article/Threat-Hunting-for-PAExec
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/12/05
+tags:
+    - attack.t1569
+    - attack.t1570
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith:
+            - '\psexec.exe'
+            - '\remcom.exe'
+            - '\paexec.exe'
+            - '\csexec.exe'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Authorized users using these tools for business purposes
+level: medium

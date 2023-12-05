@@ -1,0 +1,23 @@
+title: Powershell Command Associated with Active Directory Services
+id: ac32ccce-2dba-11ec-a246-fd2cec65dcb4
+status: stable 
+description: Detects when a Powershell cmdlet is used to change Active Directory settings. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/powershell/module/msonline/update-msolfederateddomain?view=azureadps-1.0
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/12/05
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains: 'Update-MSOLFederatedDomain'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Authorized user making expected Active Directory changes using Powershell
+level: medium
