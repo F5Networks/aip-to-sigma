@@ -1,0 +1,27 @@
+title: Network Outbound SSH
+id: 1ac0c4c3-7e6c-11ea-915e-d73df8a6f6c6
+status: stable
+description: Detects outbound HTTP network traffic. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90003
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/12/06
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationPort: 22
+        Initiated: 'true'
+    condition: selection
+fields:
+    - User
+    - Protocol
+    - DestinationIp
+    - DestinationPort
+    - SourceIp
+    - SourcePort
+    - Image
+falsepositives:
+    - Expected and trusted outbound SSH connections
+level: low
