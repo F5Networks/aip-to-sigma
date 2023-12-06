@@ -1,0 +1,27 @@
+title: Network Outbound SMTP
+id: fd4fd7e4-7e6b-11ea-804f-97b7c7fc89ab
+status: stable
+description: Detects outbound SMTP network traffic. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90003
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/12/06
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationPort: 25
+        Initiated: 'true'
+    condition: selection
+fields:
+    - User
+    - Protocol
+    - DestinationIp
+    - DestinationPort
+    - SourceIp
+    - SourcePort
+    - Image
+falsepositives:
+    - Expected and trusted outbound SMTP connections
+level: low
