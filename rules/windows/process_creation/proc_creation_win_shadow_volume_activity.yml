@@ -1,0 +1,25 @@
+title: Shadow Volume Activity
+id: 4ec2a448-de54-11eb-b4d7-4b9cad485e0e
+status: stable
+description: Detects when Volume Shadow Copy Service tools are used which could be used to extract potentially sensitive information. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://lolbas-project.github.io/lolbas/Binaries/Diskshadow/
+    - https://www.elastic.co/guide/en/siem/guide/current/volume-shadow-copy-deletion-via-vssadmin.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/12/07
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|endswith:
+            - '\vssadmin.exe'
+            - '\diskshadow.exe'
+    condition: selection
+fields:
+    - User
+    - Image
+    - CommandLine
+falsepositives:
+    - Authorized users utilizing these tools to work with Volume Shadow Copy
+level: medium

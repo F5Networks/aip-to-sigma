@@ -1,0 +1,25 @@
+title: Powershell Spawned from CMD
+id: 0ac34b26-7e6c-11ea-915e-b11ce1267622
+status: stable
+description: Detects when Powershell is spawned from cmd.exe. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://redcanary.com/threat-detection-report/techniques/windows-command-shell/
+    - https://redcanary.com/threat-detection-report/techniques/powershell/
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/12/07
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        ParentImage|endswith: '\cmd.exe'
+        Image|endswith: '\powershell.exe'
+    condition: selection
+fields:
+    - User
+    - Image
+    - ParentImage
+    - CommandLine
+falsepositives:
+    - Authorized users spawning Powershell from cmd.exe
+level: medium
