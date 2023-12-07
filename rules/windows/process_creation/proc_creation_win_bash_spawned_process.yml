@@ -1,0 +1,30 @@
+title: Sysmon - Bash Spawned Process
+id: 1c512932-7e6c-11ea-8c41-174ca103f770
+status: stable
+description: Detects when a process is launched by bash. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/12/07
+logsource:
+    product: windows
+    category: process_creation 
+detection:
+    selection:
+       ParentImage|contains: 'bash.exe'
+    condition: selection
+fields:
+    - ProcessId
+    - Image
+    - Description
+    - Product
+    - User
+    - TerminalSessionId
+    - Hashes
+    - ParentImage
+    - ParentUser
+    - ParentCommandLine
+    - CurrentDirectory
+    - OriginalFileName
+falsepositives:
+    - Authorized and known processes kicked off by bash
+level: medium
