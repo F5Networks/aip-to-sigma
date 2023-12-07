@@ -1,0 +1,23 @@
+title: Scheduled Tasks Modified
+id: 0d0ffad2-7e6c-11ea-804f-d9ef4adac058
+status: stable
+description: Detects file creation within the Tasks directory which may be noisy depending on setup. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc785125(v=ws.10)?redirectedfrom=MSDN
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/12/07
+tags:
+    - attack.t1053
+logsource:
+    product: windows
+    category: file_event
+detection:
+    selection:
+        TargetFilename|startswith: 'C:\Windows\System32\Tasks\'
+    condition: selection
+fields:
+    - User
+    - TargetFilename
+falsepositives:
+    - Legitimate creation of scheduled tasks
+level: medium
