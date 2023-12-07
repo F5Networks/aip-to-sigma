@@ -1,0 +1,38 @@
+title: Network Connection to Potential Out-Of-Band Interaction Site
+id: f20589f2-4600-4f30-9b52-d854953ef871
+status: stable
+description: Detects connections to out-of-band interaction sites such as interact.sh or Burp Collaborator which can be used to discover vulnerabilities in web applications or potentially exfiltrate sensitive data. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://portswigger.net/burp/application-security-testing/oast
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/12/06
+logsource:
+    product: windows
+    category: network_connection
+detection:
+    selection:
+        DestinationHostname|contains:
+            - 'interact.sh'
+            - 'dnslog.cn'
+            - 'requestbin.net'
+            - 'canarytokens.com'
+            - 'burpcollaborator'
+            - 'oastify.com'
+            - 'oast.pro'
+            - 'oast.live'
+            - 'oast.site'
+            - 'oast.online'
+            - 'oast.fun'
+            - 'oast.me'
+    condition: selection
+fields:
+    - User
+    - Protocol
+    - DestinationIp
+    - DestinationPort
+    - SourceIp
+    - SourcePort
+    - Image
+falsepositives:
+    - Expected audits of external facing assets by authorized parties
+level: medium
