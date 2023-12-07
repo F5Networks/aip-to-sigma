@@ -1,0 +1,31 @@
+title: Sysmon - Bitsadmin Usage
+id: 29108e66-7e6c-11ea-b74b-b54605107027
+status: stable
+description: Detects when bitsadmin executable is used. Can be used to move data off and onto a system. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+   - https://attack.mitre.org/software/S0190/
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/12/07
+logsource:
+    product: windows
+    category: process_creation
+detection:
+    selection:
+        Image|contains: 'bitsadmin.exe'
+    condition: selection
+fields:
+    - ProcessId
+    - Image
+    - Description
+    - Product
+    - User
+    - TerminalSessionId
+    - Hashes
+    - ParentImage
+    - ParentUser
+    - ParentCommandLine
+    - CurrentDirectory
+    - OriginalFileName
+falsepositives:
+    - Authorized use of bitsadmin
+level: medium
