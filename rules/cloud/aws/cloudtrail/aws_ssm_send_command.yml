@@ -21,5 +21,5 @@ fields:
     - sourceIPAddress
     - recipientAccountId
 falsepositives:
-    - Authorized cancellations from known users/services
+    - Authorized activity from known users/services
 level: low
