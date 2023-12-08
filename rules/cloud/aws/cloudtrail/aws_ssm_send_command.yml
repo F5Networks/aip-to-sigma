@@ -1,0 +1,25 @@
+title: SSM Send Command
+id: 09139007-436b-11ea-ab95-711a2cffcaff
+status: stable
+description: Detects when an SSM command is sent by a user which can be used to send arbitrary commands to systems. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_SendCommand.html
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/12/08
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ssm.amazonaws.com'
+        eventName: 'SendCommand'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized activity from known users/services
+level: low
