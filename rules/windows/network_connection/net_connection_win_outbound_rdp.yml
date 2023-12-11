@@ -7,12 +7,12 @@ references:
   - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90003
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/11/07
+modified: 2023/12/11
 logsource:
     product: windows
     category: network_connection
 detection:
     selection:
-        EventId: 3
         DestinationPort: 3389
         Initiated: 'true'
     condition: selection
