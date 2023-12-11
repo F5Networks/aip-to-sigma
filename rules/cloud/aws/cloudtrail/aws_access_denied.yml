@@ -3,11 +3,12 @@ id: 01a084db-436b-11ea-9da3-c5bf4d474479
 status: stable
 description: Detects when an action is denied due to lack of permissions. Licensed under DRL v1.1, original rule copyright F5, Inc.
 references:
-  - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_deny-ip.html
-  - https://docs.aws.amazon.com/IAM/latest/UserGuide/troubleshoot_access-denied.html
-  - https://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html#ErrorCodeList
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_deny-ip.html
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/troubleshoot_access-denied.html
+    - https://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html#ErrorCodeList
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/25
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
