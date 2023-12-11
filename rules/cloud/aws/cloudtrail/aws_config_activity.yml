@@ -6,6 +6,7 @@ references:
     - https://docs.aws.amazon.com/config/latest/developerguide/WhatIsConfig.html
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/13
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -13,11 +14,11 @@ detection:
     selection:
         eventSource: 'config.amazonaws.com'
         eventName|startswith:
-          - 'Delete'
-          - 'Put'
-          - 'Start'
-          - 'Stop'
-          - 'Select' 
+            - 'Delete'
+            - 'Put'
+            - 'Start'
+            - 'Stop'
+            - 'Select' 
     condition: selection
 fields:
     - eventName

@@ -5,7 +5,7 @@ description: Detects successful anonymous Puts and Deletes in S3. Licensed under
 references:
 author: Ethan Hansen - Security Engineer, F5 Inc
 date: 2023/06/01
-modified: 2023/07/18
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -17,7 +17,9 @@ detection:
         eventName|startswith:
             - 'Delete'
             - 'Put'
-        userIdentity.accountId: 'ANONYMOUS_PRINCIPAL'
+        userIdentity.accountId: 
+            - 'ANONYMOUS_PRINCIPAL'
+            - 'anonymous'
     condition: selection
 fields:
     - eventName

@@ -6,6 +6,7 @@ references:
     - https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/13
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -13,18 +14,18 @@ detection:
     selection_1:
         eventSource: 'ec2.amazonaws.com'
         eventName: 
-          - 'AssociateRouteTable'
-          - 'CreateVpnConnectionRoute'
-          - 'DeleteVpnConnectionRoute'
-          - 'DisassociateRouteTable'
-          - 'DisableVgwRoutePropagation'
-          - 'EnableVgwRoutePropagation'
+            - 'AssociateRouteTable'
+            - 'CreateVpnConnectionRoute'
+            - 'DeleteVpnConnectionRoute'
+            - 'DisassociateRouteTable'
+            - 'DisableVgwRoutePropagation'
+            - 'EnableVgwRoutePropagation'
     selection_2:
         eventSource: 'ec2.amazonaws.com'
         eventName|startswith:
-          - 'CreateRoute'
-          - 'DeleteRoute'
-          - 'ReplaceRoute'
+            - 'CreateRoute'
+            - 'DeleteRoute'
+            - 'ReplaceRoute'
     condition: selection_1 or selection_2
 fields:
     - eventName

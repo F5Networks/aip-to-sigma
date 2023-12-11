@@ -5,6 +5,7 @@ description: Detects information discovery of DynamoDB components. Licensed unde
 references:
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/26
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -12,8 +13,8 @@ detection:
     selection:
         eventSource: 'dynamodb.amazonaws.com'
         eventName|startswith:
-          - 'Describe'
-          - 'List' 
+            - 'Describe'
+            - 'List' 
     filter:
         userAgent: 'trustedadvisor.amazonaws.com'
         userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForTrustedAdvisor/TrustedAdvisor'

@@ -6,6 +6,7 @@ references:
     - https://docs.aws.amazon.com/eks/latest/userguide/clusters.html
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/12
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -13,18 +14,18 @@ detection:
     selection:
         eventSource: 'eks.amazonaws.com'
         eventName: 
-          - 'CreateCluster'
-          - 'DeleteCluster'
-          - 'CreateAddon'
-          - 'CreateFargateProfile'
-          - 'CreateNodegroup'
-          - 'UpdateAddon'
-          - 'UpdateClusterConfig'
-          - 'UpdateClusterVersion'
-          - 'UpdateNodegroupConfig'
-          - 'UpdateNodegroupVersion'
-          - 'AssociateEncryptionConfig'
-          - 'AssociateIdentityProviderConfig'
+            - 'CreateCluster'
+            - 'DeleteCluster'
+            - 'CreateAddon'
+            - 'CreateFargateProfile'
+            - 'CreateNodegroup'
+            - 'UpdateAddon'
+            - 'UpdateClusterConfig'
+            - 'UpdateClusterVersion'
+            - 'UpdateNodegroupConfig'
+            - 'UpdateNodegroupVersion'
+            - 'AssociateEncryptionConfig'
+            - 'AssociateIdentityProviderConfig'
     condition: selection
 fields:
     - eventName

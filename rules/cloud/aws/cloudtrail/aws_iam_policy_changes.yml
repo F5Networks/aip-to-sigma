@@ -6,6 +6,7 @@ references:
     - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/24
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -13,24 +14,24 @@ detection:
     selection:
         eventSource: 'iam.amazonaws.com'
         eventName: 
-          - 'AttachGroupPolicy'
-          - 'AttachRolePolicy'
-          - 'AttachUserPolicy'
-          - 'CreatePolicy'
-          - 'CreatePolicyVersion'
-          - 'DeleteGroupPolicy'
-          - 'DeletePolicy'
-          - 'DeletePolicyVersion'
-          - 'DetachRolePolicy'
-          - 'DeleteUserPolicy'
-          - 'DetachGroupPolicy'
-          - 'DetachUserPolicy'
-          - 'PutGroupPolicy'
-          - 'PutRolePolicy'
-          - 'PutUserPolicy'
-          - 'UpdateAssumeRolePolicy'
-          - 'SetDefaultPolicyVersion'
-          - 'DeleteRolePolicy'
+            - 'AttachGroupPolicy'
+            - 'AttachRolePolicy'
+            - 'AttachUserPolicy'
+            - 'CreatePolicy'
+            - 'CreatePolicyVersion'
+            - 'DeleteGroupPolicy'
+            - 'DeletePolicy'
+            - 'DeletePolicyVersion'
+            - 'DetachRolePolicy'
+            - 'DeleteUserPolicy'
+            - 'DetachGroupPolicy'
+            - 'DetachUserPolicy'
+            - 'PutGroupPolicy'
+            - 'PutRolePolicy'
+            - 'PutUserPolicy'
+            - 'UpdateAssumeRolePolicy'
+            - 'SetDefaultPolicyVersion'
+            - 'DeleteRolePolicy'
     condition: selection
 fields:
     - eventName

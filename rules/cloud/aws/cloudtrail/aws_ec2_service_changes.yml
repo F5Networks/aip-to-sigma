@@ -5,6 +5,7 @@ description: Detects any EC2 service changes. Licensed under DRL v1.1, original 
 references:
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/13
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -13,21 +14,21 @@ detection:
         eventSource: 'ec2.amazonaws.com'
     selection_1:
         eventName|startswith:
-          - 'Modify'
-          - 'Delete'
-          - 'Create'
+            - 'Modify'
+            - 'Delete'
+            - 'Create'
     filter:
         user:
-          - 'ElasticLoadBalancing'
-          - 'SLRManagement'
+            - 'ElasticLoadBalancing'
+            - 'SLRManagement'
     filter_2:
         ip:
-          - 'elasticloadbalancing.amazonaws.com'
-          - 'rds.amazonaws.com' 
+            - 'elasticloadbalancing.amazonaws.com'
+            - 'rds.amazonaws.com' 
     filter_3: 
         userIdentity.arn|contains:
-          - 'assumed-role/AWSServiceRoleForElasticLoadBalancing/ElasticLoadBalancing'
-          - 'assumed-role/AWSServiceRoleForRDS/SLRManagement'
+            - 'assumed-role/AWSServiceRoleForElasticLoadBalancing/ElasticLoadBalancing'
+            - 'assumed-role/AWSServiceRoleForRDS/SLRManagement'
     filter_4:  
         eventName|contains: 'Tag'
     condition: selection_source and selection_1 and not (filter and filter_2 and filter_3 and filter_4)

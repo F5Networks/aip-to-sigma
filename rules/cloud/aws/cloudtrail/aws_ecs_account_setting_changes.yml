@@ -6,6 +6,7 @@ references:
     - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-account-settings.html
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/13
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -13,8 +14,8 @@ detection:
     selection:
         eventSource: 'ecs.amazonaws.com'
         eventName: 
-          - 'PutAccountSetting'
-          - 'DeleteAccountSetting'
+            - 'PutAccountSetting'
+            - 'DeleteAccountSetting'
     condition: selection
 fields:
     - eventName

@@ -6,6 +6,7 @@ references:
     - https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/13
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -13,10 +14,10 @@ detection:
     selection:
         eventSource: 'directconnect.amazonaws.com'
         eventName|startswith: 
-          - 'Allocate'
-          - 'Create'
-          - 'Delete'
-          - 'Update'
+            - 'Allocate'
+            - 'Create'
+            - 'Delete'
+            - 'Update'
     condition: selection
 fields:
     - eventName

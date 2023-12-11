@@ -5,6 +5,7 @@ description: Detects information discovery of EC2 components. Licensed under DRL
 references:
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/26
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -18,8 +19,8 @@ detection:
     filter_2:
         userAgent: 'config.amazonaws.com'
         userIdentity.arn|endswith: 
-          - 'assumed-role/aws-controltower-ConfigRecorderRole/AWSConfig-Describe'
-          - 'assumed-role/tf-tower-config-role/AWSConfig-Describe'
+            - 'assumed-role/aws-controltower-ConfigRecorderRole/AWSConfig-Describe'
+            - 'assumed-role/tf-tower-config-role/AWSConfig-Describe'
     filter_3:
         userAgent: 'ecs.amazonaws.com'
         userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForECS/ecs-eni-provisioning'

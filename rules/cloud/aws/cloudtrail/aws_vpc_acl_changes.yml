@@ -6,6 +6,7 @@ references:
     - https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/24
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -13,12 +14,12 @@ detection:
     selection:
         eventSource: 'ec2.amazonaws.com'
         eventName: 
-          - 'CreateNetworkAcl'
-          - 'CreateNetworkAclEntry'
-          - 'DeleteNetworkAcl'
-          - 'DeleteNetworkAclEntry'
-          - 'ReplaceNetworkAclAssociation'
-          - 'ReplaceNetworkAclEntry'
+            - 'CreateNetworkAcl'
+            - 'CreateNetworkAclEntry'
+            - 'DeleteNetworkAcl'
+            - 'DeleteNetworkAclEntry'
+            - 'ReplaceNetworkAclAssociation'
+            - 'ReplaceNetworkAclEntry'
     condition: selection
 fields:
     - eventName

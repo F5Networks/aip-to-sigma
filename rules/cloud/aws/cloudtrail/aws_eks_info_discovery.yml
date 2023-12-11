@@ -5,6 +5,7 @@ description: Detects information discvoery of EKS components. Licensed under DRL
 references:
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/26
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -12,13 +13,13 @@ detection:
     selection:
         eventSource: 'eks.amazonaws.com'
         eventName: 
-          - 'ListClusters'
-          - 'DescribeCluster'
+            - 'ListClusters'
+            - 'DescribeCluster'
     filter:
         userAgent: 'config.amazonaws.com'
         userIdentity.arn|endswith: 
-          - 'assumed-role/aws-controltower-ConfigRecorderRole/ConfigResourceCompositionSession'
-          - 'assumed-role/tf-tower-config-role/ConfigResourceCompositionSession'
+            - 'assumed-role/aws-controltower-ConfigRecorderRole/ConfigResourceCompositionSession'
+            - 'assumed-role/tf-tower-config-role/ConfigResourceCompositionSession'
     condition: selection and not filter
 fields:
     - eventName

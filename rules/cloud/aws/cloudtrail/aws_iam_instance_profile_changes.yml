@@ -6,6 +6,7 @@ references:
     - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2_instance-profiles.html
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/24
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -13,10 +14,10 @@ detection:
     selection:
         eventSource: 'iam.amazonaws.com'
         eventName: 
-          - 'AddRoleToInstanceProfile'
-          - 'CreateInstanceProfile'
-          - 'DeleteInstanceProfile'
-          - 'RemoveRoleFromInstanceProfile'
+            - 'AddRoleToInstanceProfile'
+            - 'CreateInstanceProfile'
+            - 'DeleteInstanceProfile'
+            - 'RemoveRoleFromInstanceProfile'
     condition: selection
 fields:
     - eventName

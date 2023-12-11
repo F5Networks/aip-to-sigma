@@ -16,9 +16,9 @@ detection:
     selection_2:
         eventSource: 'sns.amazonaws.com'
         eventName|startswith: 
-          - 'Set'
-          - 'Create'
-          - 'Delete'
+            - 'Set'
+            - 'Create'
+            - 'Delete'
     condition: selection_1 or selection_2
 fields:
     - eventName

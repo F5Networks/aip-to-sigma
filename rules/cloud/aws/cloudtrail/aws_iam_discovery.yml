@@ -5,6 +5,7 @@ description: Detects information discovery of IAM components. Licensed under DRL
 references:
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/26
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -12,15 +13,15 @@ detection:
     selection:
         eventSource: 'iam.amazonaws.com'
         eventName|startswith: 
-          - 'Get'
-          - 'List'
+            - 'Get'
+            - 'List'
     filter_1:
         userAgent: 'config.amazonaws.com'
         userIdentity.arn|endswith:
-          - 'assumed-role/aws-controltower-ConfigRecorderRole/configLambdaExecution'
-          - 'assumed-role/AWSServiceRoleForConfig/AWSConfig-Describe'
-          - 'assumed-role/tf-tower-config-role/AWSConfig-Describe'
-          - 'assumed-role/aws-controltower-ConfigRecorderRole/AWSConfig-Describe'
+            - 'assumed-role/aws-controltower-ConfigRecorderRole/configLambdaExecution'
+            - 'assumed-role/AWSServiceRoleForConfig/AWSConfig-Describe'
+            - 'assumed-role/tf-tower-config-role/AWSConfig-Describe'
+            - 'assumed-role/aws-controltower-ConfigRecorderRole/AWSConfig-Describe'
     filter_2:
         userAgent: 'trustedadvisor.amazonaws.com'
         userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForTrustedAdvisor/TrustedAdvisor'

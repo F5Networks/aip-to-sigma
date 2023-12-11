@@ -5,6 +5,7 @@ description: Detects information discovery of load balancer components. Licensed
 references:
 author: Levi Smith - SOC Analyst II, F5 Inc
 date: 2023/10/31
+modified: 2023/12/11
 logsource:
     product: aws
     service: cloudtrail
@@ -14,12 +15,12 @@ detection:
         eventName|startswith: 'Describe'
     filter_1:
         userAgent: 
-          - 'config.amazonaws.com'
-          - 'ecs.amazonaws.com'
+            - 'config.amazonaws.com'
+            - 'ecs.amazonaws.com'
         userIdentity.arn|endswith: 
-          - 'assumed-role/aws-controltower-ConfigRecorderRole/AWSConfig-Describe'
-          - 'assumed-role/tf-tower-config-role/AWSConfig-Describe'
-          - 'assumed-role/AWSServiceRoleForECS/ecs-service-scheduler'
+            - 'assumed-role/aws-controltower-ConfigRecorderRole/AWSConfig-Describe'
+            - 'assumed-role/tf-tower-config-role/AWSConfig-Describe'
+            - 'assumed-role/AWSServiceRoleForECS/ecs-service-scheduler'
     filter_2:
         userAgent: 'trustedadvisor.amazonaws.com'
         userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForTrustedAdvisor/TrustedAdvisor' 
