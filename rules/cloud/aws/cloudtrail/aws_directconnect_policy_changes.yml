@@ -1,0 +1,30 @@
+title: DirectConnect Policy Changes
+id: 01e8fffa-436b-11ea-b0d8-370a3e8a6872
+status: stable
+description: Detects when changes to DicrectConnect policies are made. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/directconnect/latest/UserGuide/Welcome.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+modified: 2023/12/11
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'directconnect.amazonaws.com'
+        eventName|startswith: 
+            - 'Allocate'
+            - 'Create'
+            - 'Delete'
+            - 'Update'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes to DirectConnect policies from known users/services
+level: low

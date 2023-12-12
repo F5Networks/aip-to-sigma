@@ -1,0 +1,44 @@
+title: IAM Policy Changes
+id: fb64c14d-436a-11ea-a2b9-e528c53c5bad
+status: stable
+description: Detects when there are changes to IAM policies including creation, deletion and modification. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+modified: 2023/12/11
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'iam.amazonaws.com'
+        eventName: 
+            - 'AttachGroupPolicy'
+            - 'AttachRolePolicy'
+            - 'AttachUserPolicy'
+            - 'CreatePolicy'
+            - 'CreatePolicyVersion'
+            - 'DeleteGroupPolicy'
+            - 'DeletePolicy'
+            - 'DeletePolicyVersion'
+            - 'DetachRolePolicy'
+            - 'DeleteUserPolicy'
+            - 'DetachGroupPolicy'
+            - 'DetachUserPolicy'
+            - 'PutGroupPolicy'
+            - 'PutRolePolicy'
+            - 'PutUserPolicy'
+            - 'UpdateAssumeRolePolicy'
+            - 'SetDefaultPolicyVersion'
+            - 'DeleteRolePolicy'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized policy changes from known users/services
+level: low

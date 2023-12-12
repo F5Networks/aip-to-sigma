@@ -1,0 +1,31 @@
+title: SNS Changes
+id: 056ccf37-436b-11ea-b6b3-2d2f222cc9dd
+status: stable
+description: Detects any SNS changes. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/sns-examples.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection_1:
+        eventSource: 'sns.amazonaws.com'
+        eventName: 'AddPermission'
+    selection_2:
+        eventSource: 'sns.amazonaws.com'
+        eventName|startswith: 
+            - 'Set'
+            - 'Create'
+            - 'Delete'
+    condition: selection_1 or selection_2
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized SNS changes from known users/services
+level: low

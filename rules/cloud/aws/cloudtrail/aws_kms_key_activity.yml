@@ -1,0 +1,36 @@
+title: KMS Key Activity
+id: 0183d54b-436b-11ea-b06b-bdb52524ecfa
+status: stable
+description: Detects KMS key activity created, deletion and modification. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+modified: 2023/12/11
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'kms.amazonaws.com'
+        eventName: 
+            - 'CreateKey'
+            - 'DisableKey'
+            - 'DisableKeyRotation'
+            - 'EnableKey'
+            - 'EnableKeyRotation'
+            - 'PutKeyPolicy'
+            - 'ScheduleKeyDeletion'
+            - 'CancelKeyDeletion'
+    selection_1:
+        eventSource: 'kms.amazonaws.com'
+        eventName|startswith: 'GenerateDataKeyPair'
+    condition: selection or selection_1
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized KMS key management activity from known users/services
+level: medium

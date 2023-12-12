@@ -1,0 +1,29 @@
+title: SNS Information Discovery
+id: fca09d28-436a-11ea-b6b3-95b6fbbca438
+status: stable
+description: Detects information discovery of SNS components. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/26
+modified: 2023/12/11
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'sns.amazonaws.com'
+        eventName: 
+            - 'List'
+    filter:
+        userAgent: 'config.amazonaws.com'
+        userIdentity.arn|endswith: 'assumed-role/aws-controltower-ConfigRecorderRole/SNSDescribeHandlerSession'
+    condition: selection and not filter
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized reads from known user/services
+level: low

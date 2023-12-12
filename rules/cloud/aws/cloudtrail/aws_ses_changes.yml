@@ -1,0 +1,30 @@
+title: SES Changes
+id: 024ca3eb-436b-11ea-b0d8-714b056112d4
+status: stable
+description: Detects an SES changes including deletes, reates and modifications. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://docs.aws.amazon.com/general/latest/gr/rande.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/13
+modified: 2023/12/11
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ses.amazonaws.com'
+        eventName|startswith:
+            - 'Delete'
+            - 'Create'
+            - 'Update'
+            - 'Send' 
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized changes from known users/services
+level: low

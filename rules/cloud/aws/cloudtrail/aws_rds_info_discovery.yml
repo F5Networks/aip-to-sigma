@@ -1,0 +1,30 @@
+title: RDS Information Discovery
+id: fdcdd208-436a-11ea-b06b-a1c604904508
+status: stable
+description: Detects information discovery of RDS components. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/26
+modified: 2023/12/11
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'rds.amazonaws.com'
+        eventName|startswith:
+            - 'List'
+            - 'Describe' 
+    filter:
+        userAgent: 'trustedadvisor.amazonaws.com'
+        userIdentity.arn|endswith: 'assumed-role/AWSServiceRoleForTrustedAdvisor/TrustedAdvisor'
+    condition: selection and not filter
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized reads from known user/services
+level: low

@@ -1,0 +1,32 @@
+title: S3 Successful Anonymous Bucket Access
+id: ddea1168-eab4-11ec-a719-e1290821599c
+status: stable
+description: Detects successful anonymous Puts and Deletes in S3. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+author: Ethan Hansen - Security Engineer, F5 Inc
+date: 2023/06/01
+modified: 2023/12/11
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 's3.amazonaws.com'
+        errorCode: null
+        errorMessage: null 
+        eventName|startswith:
+            - 'Delete'
+            - 'Put'
+        userIdentity.accountId: 
+            - 'ANONYMOUS_PRINCIPAL'
+            - 'anonymous'
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Approved deployment of public S3 bucket that allows write access
+level: high

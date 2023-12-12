@@ -1,0 +1,28 @@
+title: SES Information Discovery
+id: 033b498e-436b-11ea-b6b3-71a9bc96ffa1
+status: stable
+description: Detects reads of SES components. Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+     - https://docs.aws.amazon.com/ses/latest/dg/Welcome.html
+author: Levi Smith - SOC Analyst II, F5 Inc
+date: 2023/10/24
+modified: 2023/12/11
+logsource:
+    product: aws
+    service: cloudtrail
+detection:
+    selection:
+        eventSource: 'ses.amazonaws.com'
+        eventName|startswith:
+            - 'List'
+            - 'Describe' 
+    condition: selection
+fields:
+    - eventName
+    - userIdentity.userName
+    - userIdentity.arn
+    - sourceIPAddress
+    - recipientAccountId
+falsepositives:
+    - Authorized reads from known users/services
+level: low
