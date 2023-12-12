@@ -1,0 +1,24 @@
+title: Sysmon File Create Stream Hash 
+id: 2013aeb2-7e6c-11ea-9a29-0b5a6a844334
+status: stable 
+description: Alerts when a file stream creation is detected.  Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=90015
+author: Bria Atchley - SOC Analyst, F5 Inc
+date: 2023/12/11
+logsource: 
+    product: windows 
+    service: sysmon 
+detection: 
+    selection: 
+        EventId: 15
+    condition: selection
+fields:
+    - User 
+    - TargetFileName
+    - Source
+    - Hash
+    - Description
+falsepositives:
+    - Expected file stream creation 
+level: medium 
