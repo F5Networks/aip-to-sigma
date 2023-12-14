@@ -1,0 +1,28 @@
+title: Network 
+id: 10f571b1-7e6c-11ea-a9e3-7bfa426994d9
+status: stable 
+description: Alerts when a successfully logs into a system via the network.  Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624
+author: Bria Atchley - SOC Analyst, F5 Inc
+date: 2023/12/14
+logsource: 
+    product: windows 
+    service: security 
+detection: 
+    selection: 
+        EventId: 4624
+        LogonType:
+            - 3
+            - 8 
+    condition: selection
+fields:
+    - SubjectUserSid
+    - SubjectUserName
+    - TargetUserName
+    - SubjectLogonId
+    - TargetUserSid
+    - LogonType
+falsepositives:
+    - Expected system logons via the network 
+level: medium 
