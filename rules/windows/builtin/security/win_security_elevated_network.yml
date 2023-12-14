@@ -1,0 +1,29 @@
+title: Elevated Network 
+id: 32d09709-7e6c-11ea-804f-09b778a8c4d3
+status: stable 
+description: Alerts when a network login successfully logs into a system with elevated privileges.  Licensed under DRL v1.1, original rule copyright F5, Inc.
+references:
+    - https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4624
+author: Bria Atchley - SOC Analyst, F5 Inc
+date: 2023/12/14
+logsource: 
+    product: windows 
+    service: security 
+detection: 
+    selection: 
+        EventId: 4624
+        LogonType:
+            - 3
+            - 8
+        ElevatedToken: '%%1842'
+    condition: selection
+fields:
+    - SubjectUserSid
+    - SubjectUserName
+    - TargetUserName
+    - SubjectLogonId
+    - TargetUserSid
+    - LogonType
+falsepositives:
+    - Expected successful logon events 
+level: medium 
