@@ -22,8 +22,8 @@ While each rule has been run through the [Sigma CLI](https://github.com/SigmaHQ/
 
 If you are an AIP customer and have any questions about this project please reach out to your PSE or the AIP SOC.
 
-## Roadmap
-As of August 8th, 2023 all compatible Severity 1 rules in the AIP platform have had Sigma versions created. Work is underway to continue converting the Severity 2 and 3 rules. 
+## Coverage and Roadmap
+As of December 18th, 2023 we have converted 82% of the rules in the AIP Platform with 298 out of 363 converted. Of the remaining 65 rules: 45 cannot be converted, 4 are covered by other rules, and 16 require additional work. Updates will be made to the repo as we complete work on the remaining 16 rules. 
 
 ## Contributing
 At this time we are not accepting pull requests. 
