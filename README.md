@@ -3,7 +3,7 @@
 ## Description
 This project contains rules from F5 Distributed Cloud App Infrastructure Protection (AIP) in the [Sigma](https://sigmahq.io/) format. Sigma is a "Generic Signature Format for SIEM Systems" and could best be summed up as "Sigma is for log files what Snort is for network traffic and YARA is for files". 
 
-Since AIP reached End-Of-Sale in June 2023 and will reach End-Of-Life in June 2024 the AIP Rules Team decided to create Sigma version of as many of our rules as possible so customers can take advantage of our rules in other products after June 2024. If any changes are made to existing rules in the AIP product or if new rules are created those changes will be pushed to this project shortly after. 
+Since AIP reached End-Of-Sale in June 2023 and will reach End-Of-Life in June 2024 the AIP Detection Engineering Team decided to create Sigma version of as many of our rules as possible so customers can take advantage of our rules in other products after June 2024. If any changes are made to existing rules in the AIP product or if new rules are created those changes will be pushed to this project shortly after. 
 
 These rules are provided "as is" though every effort has been made to make them align as closely as possible with the AIP version of the rule. Field names have been changed to align with the [Sigma specification](https://github.com/SigmaHQ/sigma-specification) and not every AIP rule will have a Sigma version. There is likely going to be overlap with the base Sigma rules. 
 
