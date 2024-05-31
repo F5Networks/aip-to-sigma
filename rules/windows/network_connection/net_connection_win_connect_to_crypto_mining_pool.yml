@@ -5,6 +5,7 @@ description: Detects connections to some known cryptocurrency mining pools. Lice
 references:
 author: Ethan Hansen - Security Engineer, F5 Inc
 date: 2023/06/22
+modified: 2024/05/31
 logsource:
     product: windows
     category: network_connection
@@ -107,12 +108,14 @@ detection:
             - 'xmrpool.net'
             - 'xmv.superpools.online'
             - 'you.tubetitties.com'
+            - 'rx.unmineable.com'
+            - 'rx.unminable.com'
     condition: selection
 fields:
     - User
     - Image
     - CommandLine
-    - DestinationHost
+    - DestinationHostname
 falsepositives:
     - Some of these domain names may no longer be associated with cryptomining
 level: high
